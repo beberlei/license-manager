@@ -1,6 +1,6 @@
 # Doctrine License Manager
 
-A Symfony2 application:
+A Symfony2 application that helps you switch the license for a Github project.
 
 1. Checkout
 2. Change app/config/parameters.yml-dist to app/config/parameters.yml
@@ -9,3 +9,6 @@ A Symfony2 application:
 5. Run "composer install"
 
 Using ruby-fpm and ant you can generate a debian package of this application.
+
+You have to update all the views in src/Doctrine/Bundle/LicenseManagerBundle/Resources/views to match your own open source project. Currently texts are all for Doctrine Project and there is no CMS to help you change the content.
+
