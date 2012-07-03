@@ -1,0 +1,86 @@
+{% extends "DoctrineLicenseManagerBundle::layout.html.twig" %}
+
+{% block content %}
+<div class="row">
+    <h1>{{ author.username }}</h1>
+
+    <p>{% if author.approved == 1 %}
+    <span class="label label-success">Approved</span>
+    {% elseif author.approved == 2 %}
+    <span class="label label-warning">Not approved</span>
+    {% elseif author.approved == 3 %}
+    <span class="label label-warning">Not the person</span>
+    {% else %}
+        {% if app.security.isGranted('ROLE_USER') %}
+        <form method="post" action="{{ path('licenses_author_approve', {'id': author.id}) }}">
+            <input type="submit" value="Approve" class="btn btn-primary" />
+        </form>
+        {% else %}
+        Unknown
+        {%endif %}
+    {% endif %}</p>
+
+    {% if app.security.isGranted('ROLE_USER') %}
+        <p><a href="{{ path('author_approve', {'id': author.id, 'hash': expectedHash}) }}">Users approve page</a></p>
+
+    <h2>Revision History</h2>
+
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Revision</th>
+            <th>Date</th>
+            <th>User</th>
+        </tr>
+        </thead>
+        <tbody>
+    {% for revision in revisions %}
+        <tr>
+            <td>{{ revision.rev }}</a></td>
+            <td>{{ revision.timestamp | date('r') }}</td>
+            <td>{{ revision.username|default('Anonymous') }}</td>
+        </tr>
+    {% else %}
+        <tr colspan="3">No revisions for this user yet.</tr>
+    {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+
+    <h2>Commits</h2>
+
+    <div class="pagerfanta">
+        {{ pagerfanta(commits, 'twitter_bootstrap') }}
+    </div>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Project</th>
+                <th>SHA1</th>
+                <th>Trivial/Deleted</th>
+                <th>Created</th>
+            </tr>
+        </thead>
+        <tbody>
+    {% for commit in commits %}
+            <tr>
+                <td>{{ commit.project.name }}</td>
+                <td><a class="commitDetails" href="https://github.com/{{ commit.project.name }}/commit/{{ commit.sha1 }}" target="_blank">{{ commit.sha1 }}</a></td>
+                <td>
+                    {% if commit.trivial %}
+                        <span class="label label-warning">Trivial/Deleted code</span>
+                    {% elseif app.security.isGranted('ROLE_USER') %}
+                        <form method="post" action="{{ path('licenses_commit_trivial', {'id': commit.id}) }}" class="mark-trivial-form">
+                            <input type="submit" value="Mark Trivial" class="btn btn-warning" />
+                        </form>
+                    {% else %}
+                        <span class="label">Not trivial</span>
+                    {% endif %}
+                </td>
+                <td>{{ commit.created|date('d.m.Y') }}</td>
+            </tr>
+    {% endfor %}
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "DoctrineLicenseManagerBundle::layout.html.twig" %}
+
+{% block content %}
+<h2>Request for Sending E-Mails</h2>
+
+<p>Please confirm sending {{ authors }} emails to committers with request
+for approving license change.</p>
+
+<form method="post" action="{{ path('licenses_project_send', {'id': project.id}) }}">
+    <input type="submit" value="Send" class="btn btn-warning" />
+</form>
+{% endblock %}

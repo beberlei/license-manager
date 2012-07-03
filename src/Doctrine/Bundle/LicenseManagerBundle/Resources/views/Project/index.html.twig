@@ -1,0 +1,24 @@
+{% extends "DoctrineLicenseManagerBundle::layout.html.twig" %}
+
+{% block content %}
+
+<table class="table table-bordered">
+    <tr>
+        <th>Name</th>
+        <th>Confirmed Insertions %</th>
+        <th>Trival/Removed Code %</th>
+    </tr>
+{% for data in projects %}
+    <tr>
+        <td><a href="{{ path('licenses_authors', {'project': data.project.id} ) }}">{{ data.project.name }}</a></td>
+        <td>{{ data.ratio }}%</td>
+        <td>{{ data.ratio_trivial }}%</td>
+    </tr>
+{% endfor %}
+</table>
+
+{% if app.security.isGranted('ROLE_ADMIN') %}
+<a class="btn btn-success" href="{{ path('licenses_project_request') }}">Send Mails</a>
+{% endif %}
+
+{% endblock %}

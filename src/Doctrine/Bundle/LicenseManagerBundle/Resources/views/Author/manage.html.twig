@@ -1,0 +1,44 @@
+{% extends "DoctrineLicenseManagerBundle::layout.html.twig" %}
+
+{% block content %}
+
+<h1>Authors</h1>
+
+    <p>{{ authors|length }} Authors with approve ratio: {{ approveRatio }}%. Still {{ missing }} authors missing.</p>
+
+    <table class="table table-bordered">
+        <tr>
+            <th>Username</th>
+            <th>E-Mail</th>
+            <th><a href="{{ path('licenses_authors', {'unapproved': 1}) }}">Approved</a></th>
+            <th>Insertions</th>
+            <th>Deletions</th>
+        </tr>
+    {% for data in authors %}
+        <tr>
+            <td><a href="{{ path('licenses_author_view', {'id': data.author.id}) }}">{{ data.author.username }}</a></td>
+            <td>
+            {% if app.security.isGranted('ROLE_USER') %}
+                <input type="email" data-url="{{ path('licenses_authors_update', {'id': data.author.id}) }}" name="email" data-author="{{data.author.id}}" value="{{ data.author.email }}" class="span5 author-email" maxlength="255" />
+            {% else %}
+                {% if data.author.hasRealEmail() %}<span class="label label-success">Known</span>{% else %}<span class="label label-warning">Unknown</span>{% endif %}
+            {% endif %}
+            </td>
+            <td>
+                {% if data.author.approved == 1 %}
+                <span class="label label-success">Approved</span>
+                {% elseif data.author.approved == 2 %}
+                <span class="label label-warning">Not approved</span>
+                {% elseif data.author.approved == 3 %}
+                <span class="label label-warning">Not the person</span>
+                {% else %}
+                <span class="label">Unknown</span>
+                {% endif %}
+            </td>
+            <td>{{ data.insertions }}</td>
+            <td>{{ data.deletions }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+
+{% endblock %}
