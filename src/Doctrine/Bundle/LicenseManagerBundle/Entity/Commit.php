@@ -31,7 +31,7 @@ class Commit
     /** @ORM\Column(type="integer") */
     protected $deletions;
 
-    public function __construct($sha1, Project $project = null, Author $author = null, $changeLine, \DateTime $created)
+    public function __construct($sha1, Project $project = null, Author $author = null, $changeLine = null, \DateTime $created = null)
     {
         $this->sha1    = $sha1;
         $this->project = $project;
