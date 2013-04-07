@@ -76,7 +76,7 @@ class ProjectController extends Controller
         $authors = $qb->getQuery()->getResult();
 
         $client = new \Buzz\Browser(new \Buzz\Client\Curl);
-        $headers = array('Authorization: Basic ' . base64_encode($this->container->getParameter('mailgun_apikey'));
+        $headers = array('Authorization: Basic ' . base64_encode($this->container->getParameter('mailgun_apikey')));
         $emails = array();
 
         foreach ($authors as $author) {
