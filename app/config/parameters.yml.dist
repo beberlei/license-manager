@@ -3,7 +3,7 @@ parameters:
     database_host:     localhost
     database_port:     ~
     database_name:     licenses
-    database_user:     root
+    database_user:     travis
     database_password: ~
 
     mailer_transport:  smtp

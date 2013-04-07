@@ -5,5 +5,7 @@ php:
 
 before_script:
   - composer install --no-interaction
+  - app/console doctrine:database:create
+  - app/console doctrine:schema:create
 
 script: phpunit -c app
