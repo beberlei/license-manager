@@ -17,8 +17,8 @@ decide to approve/deny the proposed license change.
 
 Installation
 ------------
-Run "composer create-project https://github.com/beberlei/license-manager.git"
 
+Run "composer create-project doctrine/license-manager"
 Using ruby-fpm and ant you can generate a debian package of this application.
 
 Usage
