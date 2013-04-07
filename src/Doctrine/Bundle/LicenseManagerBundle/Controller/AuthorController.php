@@ -55,7 +55,7 @@ class AuthorController extends Controller
     }
 
      /**
-      * @Extra\Route("/licenses/authors/update/{id}", name="licenses_authors_update")
+      * @Extra\Route("/licenses/authors/{id}/update", name="licenses_authors_update")
       * @Extra\Method("POST")
       */
     public function updateAction($id)
@@ -70,13 +70,13 @@ class AuthorController extends Controller
 
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('{"ok":true}', 200, array('Content-Type' => 'application/json'));
-        } else {
-            return $this->redirect($this->generateUrl('licenses_authors'));
         }
+
+        return $this->redirect($this->generateUrl('licenses_authors'));
     }
 
     /**
-     * @Extra\Route("/licenses/author/{id}", name="licenses_author_view")
+     * @Extra\Route("/licenses/authors/{id}", name="licenses_author_view")
      * @Extra\Method("GET")
      * @Extra\Template
      */
@@ -101,7 +101,7 @@ class AuthorController extends Controller
     }
 
     /**
-     * @Extra\Route("/licenses/author/approve/{id}", name="licenses_author_approve")
+     * @Extra\Route("/licenses/authors/{id}/approve", name="licenses_author_approve")
      * @Extra\Method("POST")
      */
     public function approveAction($id)
@@ -118,7 +118,8 @@ class AuthorController extends Controller
     }
 
     /**
-     * @Extra\Route("/licenses/approve/{id}", name="author_approve")
+     * @Extra\Route("/licenses/authors/{id}/approve", name="author_approve")
+     * @Extra\Method("GET")
      * @Extra\Template
      */
     public function authorApproveAction($id)
@@ -138,7 +139,7 @@ class AuthorController extends Controller
         $form = $this->createForm(new \Doctrine\Bundle\LicenseManagerBundle\Form\ApproveType(), $author);
 
         if ($this->getRequest()->getMethod() === 'POST') {
-            $form->bindRequest($this->getRequest());
+            $form->bind($this->getRequest());
 
             if ($form->isValid()) {
                 $entityManager->flush();

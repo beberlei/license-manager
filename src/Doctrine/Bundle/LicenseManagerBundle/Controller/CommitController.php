@@ -12,7 +12,7 @@ use Pagerfanta\Pagerfanta;
 class CommitController extends Controller
 {
     /**
-     * @Extra\Route("/licenses/commit/{id}/trivial", name="licenses_commit_trivial")
+     * @Extra\Route("/licenses/commits/{id}/trivial", name="licenses_commit_trivial")
      * @Extra\Method("POST")
      * @Extra\Template
      */
