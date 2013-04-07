@@ -1,17 +1,1 @@
-Hello Doctrine committer,
-
-We have found your email {{ author.email }} on the mailing list, bugtrackers, website or the Git commit logs.
-
-We contact you, because the Doctrine Core Team wants to change the license of all Doctrine subprojects from LGPL to MIT license. To be able to do this we have to ask for permission of every committer. You are one of the nearly 400 Doctrine committers that have taken part in this projects journey.
-
-Please visit the following link where you can enter your answer:
-
-{{ link }}
-
-Please take a minute and answer to our request.
-
-If you have problems or questions using the system don't hesitate to contact
-us.
-
-greetings,
-the Doctrine Core Team (Guilherme Blanco, Benjamin Eberlei, Jonathan Wage, ..)
+{{ include(template_from_string(email_text)) }}
