@@ -14,8 +14,7 @@ security:
         in_memory:
             memory:
                 users:
-                    beberlei:  { password: 'secret', roles: [ 'ROLE_USER', 'ROLE_ADMIN' ] }
-                    beberlei2:  { password: 'secret', roles: [ 'ROLE_USER'] }
+                    admin:  { password: %password%, roles: [ 'ROLE_USER', 'ROLE_ADMIN' ] }
 
     firewalls:
         dev:
