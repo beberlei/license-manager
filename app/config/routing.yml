@@ -1,3 +1,9 @@
+home_redirect:
+    pattern: /
+    defaults:
+        _controller: FrameworkBundle:Redirect:redirect
+        route: licenses_projects
+
 DoctrineLicenseManagerBundle:
     resource: "@DoctrineLicenseManagerBundle/Controller/"
     type:     annotation
