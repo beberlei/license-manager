@@ -50,7 +50,7 @@ class AuthorController extends Controller
         return array(
             'authors' => $authors,
             'missing' => $missing,
-            'approveRatio' => number_format($approvedCount / count($authors) * 100, 2)
+            'approveRatio' => count($authors) ? number_format($approvedCount / count($authors) * 100, 2) : 0,
         );
     }
 
