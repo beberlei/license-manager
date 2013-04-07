@@ -11,3 +11,5 @@ to match your own open source project. Currently texts are all for Doctrine Proj
 there is no CMS to help you change the content.
 
 The best way to do this is by overriding them via ``app/Resources/DoctrineBundleLicenseManagerBundle/views``
+
+To import a repository run "app/console license:import [url to repository]"
