@@ -1,114 +1,114 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>License Manager</title>
-        {% stylesheets "@DoctrineLicenseManagerBundle/Resources/public/bootstrap/css/bootstrap.min.css" %}
-            <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
-        {% endstylesheets %}
-        <style type="text/css">
+<head>
+    <title>{{ short_title }}</title>
+    {% stylesheets "@DoctrineLicenseManagerBundle/Resources/public/bootstrap/css/bootstrap.min.css" %}
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+    {% endstylesheets %}
+    <style type="text/css">
         <!--
-            body { margin-top: 80px; font-size: 12pt; }
-            p { font-size: 12pt; line-height: 17pt; }
+        body { margin-top: 80px; font-size: 12pt; }
+        p { font-size: 12pt; line-height: 17pt; }
         -->
-        </style>
-    </head>
+    </style>
+</head>
 
-    <body>
-        <div class="navbar navbar-fixed-top">
-            <div class="navbar-inner">
-                <div class="container">
-                    <a href="{{ path('licenses_projects') }}" class="brand">Doctrine License Switch</a>
-
-                    <ul class="nav">
-                        <li><a href="{{ path('licenses_projects') }}">Projects</a></li>
-                        <li><a href="{{ path('licenses_authors') }}">Authors</a></li>
-                        {% if not app.security.isGranted('ROLE_USER') %}
-                        <li><a href="{{ path('login') }}">Login</a></li>
-                        {% else %}
-                        <li><a href="{{ path('logout') }}">Logout</a></li>
-                        {% endif %}
-                    </ul>
-
-                </div>
-            </div>
-        </div>
-
+<body>
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
         <div class="container">
-            {% if app.session.flashbag.has('notice') %}
-                <div class="alert alert-success">
-                    {% for item in app.session.flashbag.get('notice') %}
-                        {{ item }}
-                    {% endfor %}
-                </div>
-            {% endif %}
+            <a href="{{ path('licenses_projects') }}" class="brand">{{ short_title }}</a>
 
-            <p>We are trying to change the license of Doctrine Projects from LGPL to MIT. This tool helps us managing this effort.</p>
-
-            {% block content %}{% endblock %}
+            <ul class="nav">
+                <li><a href="{{ path('licenses_projects') }}">Projects</a></li>
+                <li><a href="{{ path('licenses_authors') }}">Authors</a></li>
+                {% if not app.security.isGranted('ROLE_USER') %}
+                    <li><a href="{{ path('login') }}">Login</a></li>
+                {% else %}
+                    <li><a href="{{ path('logout') }}">Logout</a></li>
+                {% endif %}
+            </ul>
 
         </div>
+    </div>
+</div>
 
-        <div id="commitDetails" class="modal" style="display: none;">
-            <div class="modal-header">
-                <h2>Commit</h2>
-            </div>
-            <div class="modal-body">
-            </div>
-            <div class="modal-footer">
-                <a href="#" class="btn btn-primary modal-close">Close</a>
-            </div>
+<div class="container">
+    {% if app.session.flashbag.has('notice') %}
+        <div class="alert alert-success">
+            {% for item in app.session.flashbag.get('notice') %}
+                {{ item }}
+            {% endfor %}
         </div>
+    {% endif %}
 
-        <script language="javascript" type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-        {% javascripts 
-            "@DoctrineLicenseManagerBundle/Resources/public/bootstrap/js/bootstrap.min.js"
-            "@DoctrineLicenseManagerBundle/Resources/public/js/ajaxQueue.js"
-        %}
-            <script language="javascript" type="text/javascript" src="{{ asset_url }}"></script>
-        {% endjavascripts %}
-        <script language="javascript" type="text/javascript">
-        <!--
-            $(document).ready(function() {
-                $(".mark-trivial-form").submit(function() {
-                    var form = $(this);
-                    $.ajax({
-                        type: 'POST',
-                        url: $(this).attr('action'),
-                        success: function() {
-                            form.parent().append('<span class="label label-warning">Trivial</span>');
-                            form.remove();
+    <p>{{ long_title }}</p>
 
-                        }
-                    });
-                    return false;
-                });
+    {% block content %}{% endblock %}
 
-                var changeAuthorEmail = function() {
-                    var input = $(this);
-                    $.ajaxQueue({
-                        type: 'POST',
-                        url: $(this).attr('data-url'),
-                        data: {"email": $(this).val()},
-                        success: function() {
-                            input.stop()
-                                 .animate({ backgroundColor: "#FFFF9C"}, 100)
-                                 .delay(1500)
-                                 .animate({ backgroundColor: "#ffffff"}, 100);
-                        }
-                    });
-                };
-                $(".author-email").change(changeAuthorEmail).keyup(changeAuthorEmail);
-                /*$("a.commitDetails").click(function() {
-                    $("#commitDetails").modal();
-                    $("#commitDetails").find('.modal-body').html('<iframe src="' + $(this).attr('href') + '" style="width:100%;"></iframe>');
-                    return false;
-                });
-                $("#commitDetails").find('.modal-close').click(function() {
-                    $("#commitDetails").modal('hide');
-                });*/
+</div>
+
+<div id="commitDetails" class="modal" style="display: none;">
+    <div class="modal-header">
+        <h2>Commit</h2>
+    </div>
+    <div class="modal-body">
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="btn btn-primary modal-close">Close</a>
+    </div>
+</div>
+
+<script language="javascript" type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+{% javascripts
+"@DoctrineLicenseManagerBundle/Resources/public/bootstrap/js/bootstrap.min.js"
+"@DoctrineLicenseManagerBundle/Resources/public/js/ajaxQueue.js"
+%}
+<script language="javascript" type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+<script language="javascript" type="text/javascript">
+    <!--
+    $(document).ready(function() {
+        $(".mark-trivial-form").submit(function() {
+            var form = $(this);
+            $.ajax({
+                type: 'POST',
+                url: $(this).attr('action'),
+                success: function() {
+                    form.parent().append('<span class="label label-warning">Trivial</span>');
+                    form.remove();
+
+                }
             });
-        -->
-        </script>
-    </body>
+            return false;
+        });
+
+        var changeAuthorEmail = function() {
+            var input = $(this);
+            $.ajaxQueue({
+                type: 'POST',
+                url: $(this).attr('data-url'),
+                data: {"email": $(this).val()},
+                success: function() {
+                    input.stop()
+                            .animate({ backgroundColor: "#FFFF9C"}, 100)
+                            .delay(1500)
+                            .animate({ backgroundColor: "#ffffff"}, 100);
+                }
+            });
+        };
+        $(".author-email").change(changeAuthorEmail).keyup(changeAuthorEmail);
+        /*$("a.commitDetails").click(function() {
+         $("#commitDetails").modal();
+         $("#commitDetails").find('.modal-body').html('<iframe src="' + $(this).attr('href') + '" style="width:100%;"></iframe>');
+         return false;
+         });
+         $("#commitDetails").find('.modal-close').click(function() {
+         $("#commitDetails").modal('hide');
+         });*/
+    });
+    -->
+</script>
+</body>
 </html>
 
