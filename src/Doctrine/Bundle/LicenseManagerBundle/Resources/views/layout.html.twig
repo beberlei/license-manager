@@ -42,9 +42,9 @@
         </div>
     {% endif %}
 
-    <p>{{ long_title }}</p>
-
-    {% block content %}{% endblock %}
+    {% block content %}
+        <p>{{ long_title }}</p>
+    {% endblock %}
 
 </div>
 

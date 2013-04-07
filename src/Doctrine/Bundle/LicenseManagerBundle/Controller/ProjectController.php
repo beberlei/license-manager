@@ -38,7 +38,7 @@ class ProjectController extends Controller
     }
 
     /**
-     * @Extra\Route("/licenses/project/send", name="licenses_project_request")
+     * @Extra\Route("/licenses/projects/send", name="licenses_project_request")
      * @Extra\Method("GET")
      * @Extra\Template
      */
@@ -61,7 +61,7 @@ class ProjectController extends Controller
     }
 
     /**
-     * @Extra\Route("/licenses/project/send", name="licenses_project_send")
+     * @Extra\Route("/licenses/projects/send", name="licenses_project_send")
      * @Extra\Method("POST")
      */
     public function sendAction()
@@ -103,7 +103,7 @@ class ProjectController extends Controller
                     'link'   => $link
                 ))
             ));
-            $response = $client->post('https://api.mailgun.net/v2/doctrine.mailgun.org/messages', $headers, $content);
+            $client->post('https://api.mailgun.net/v2/doctrine.mailgun.org/messages', $headers, $content);
         }
 
         return $this->redirect($this->generateUrl('licenses_projects'));
