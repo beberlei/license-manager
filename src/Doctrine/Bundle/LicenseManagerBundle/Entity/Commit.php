@@ -38,12 +38,22 @@ class Commit
         $this->author  = $author;
         $this->created = $created;
 
-        if (preg_match('(([0-9]+) files changed, ([0-9]+) insertions\(\+\), ([0-9]+) deletions)', $changeLine, $match)) {
-            $this->filesChanged = $match[1];
-            $this->insertions   = $match[2];
-            $this->deletions    = $match[3];
-        } else {
+        if (!preg_match('/(\d+) file(s)? changed/', $changeLine, $match)) {
             throw new \InvalidArgumentException("Invalid changeline could not be parsed: " . $changeLine);
+        }
+
+        $this->filesChanged = (int)$match[1];
+
+        if (preg_match('/(\d+) insertion/', $changeLine, $match)) {
+            $this->insertions   = $match[1];
+        } else {
+            $this->insertions   = 0;
+        }
+
+        if (preg_match('/(\d+) deletion/', $changeLine, $match)) {
+            $this->deletions    = $match[1];
+        } else {
+            $this->deletions    = 0;
         }
     }
 
