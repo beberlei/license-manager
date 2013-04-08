@@ -21,10 +21,6 @@ security:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        login:
-            pattern:  ^/demo/secured/login$
-            security: false
-
         secured_area:
             pattern:    ^/
             form_login:
@@ -34,8 +30,6 @@ security:
             anonymous: ~
 
     access_control:
-        #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
-        #- { path: ^/_internal/secure, roles: IS_AUTHENTICATED_ANONYMOUSLY, ip: 127.0.0.1 }
         - { path: ^/licenses/author/approve, roles: ROLE_USER }
         - { path: ^/licenses/author/update, roles: ROLE_USER }
         - { path: ^/licenses/project/send, roles: ROLE_ADMIN }
