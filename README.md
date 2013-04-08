@@ -9,16 +9,22 @@ Description
 
 This application allows importing multiple github repositories, extracting each author
 and their respective commits. The project overview page tracks the approval ratio per
-imported project. Administrators can add missing emails for authors as well as mark
-specific commits as trivial (ie. not requiring specific approval). Administrators
-can then trigger a mass email to all authors with no yet approved commits which contain
-a link with a per author hash. Using this link authors can review each commit and
-decide to approve/deny the proposed license change.
+imported project.
+
+Administrators can add missing emails for authors as well as mark specific commits as
+trivial (ie. not requiring specific approval). Administrators can then trigger a mass
+email to all authors with no yet approved commits which contain a link with a per
+author hash.
+
+Using this link authors can review each commit and decide to approve/deny the proposed
+license change.
 
 Installation
 ------------
 
-Run "composer create-project doctrine/license-manager"
+Run "composer create-project doctrine/license-manager --stability=dev" and
+adjust the suggested parameter values as needed when prompted.
+
 Using ruby-fpm and ant you can generate a debian package of this application.
 
 Usage
