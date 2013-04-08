@@ -3,7 +3,9 @@ DoctrineLicenseManagerBundle:
     type:     annotation
     prefix:   /
 
-# Internal routing configuration to handle ESI
-#_internal:
-#    resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
-#    prefix:   /_internal
+_welcome:
+    pattern: /{path}
+    defaults:
+        _controller: DoctrineLicenseManagerBundle:Default:index
+    requirements:
+        path: .*
