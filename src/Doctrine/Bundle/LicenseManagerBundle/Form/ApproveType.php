@@ -13,7 +13,7 @@ class ApproveType extends AbstractType
                 'choices' => array(
                     '0' => '-- Select an option --',
                     '1' => 'I approve',
-                    '2' => 'I don\' approve',
+                    '2' => 'I don\'t approve',
                     '3' => 'You contacted the wrong person.',
                 )
             ))
