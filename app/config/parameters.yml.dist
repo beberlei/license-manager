@@ -13,8 +13,9 @@ parameters:
 
     locale:            en
     secret:            ThisTokenIsNotSoSecretChangeIt
-    mailgun_apikey:    ~ 
+    mailgun_apikey:    ~
 
+    # the admin login password
     password: 123
 
     short_title: Doctrine License Switch
@@ -85,6 +86,8 @@ parameters:
         <p>The Doctrine Core Team</p>
 
         <p><small>Guilherme Blanco, Benjamin Eberlei, Jonathan Wage</small></p>
+    email_sender: "Your Name <your.email@domain.tld>"
+    email_subject: "Your answer needed: Doctrine PHP Project License Change"
     email_text: |
         Hello Doctrine committer,
 

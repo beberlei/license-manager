@@ -94,10 +94,13 @@ class ProjectController extends Controller
             $expected = sha1($this->container->getParameter('secret') . $author->getId() . $author->getEmail());
             $link = $this->generateUrl('author_approve', array('id' => $author->getId(), 'hash' => $expected), true);
 
+            $from = $this->container->getParameter('email_sender');
+            $subject = $this->container->getParameter('email_subject');
+
             $content = http_build_query(array(
-                'from'    => 'Benjamin Eberlei <kontakt@beberlei.de>',
+                'from'    => $from,
                 'to'      => $author->getEmail(),
-                'subject' => 'Your answer needed: Doctrine PHP Project License Change',
+                'subject' => $subject,
                 'text'    => $this->renderView('DoctrineLicenseManagerBundle:Project:email.txt.twig', array(
                     'author' => $author,
                     'link'   => $link

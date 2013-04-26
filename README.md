@@ -19,6 +19,14 @@ author hash.
 Using this link authors can review each commit and decide to approve/deny the proposed
 license change.
 
+Prerequisites
+-------------
+
+* PHP 5.3.3 or better
+* A database supported by doctrine orm, i.e. mysql, postgresql or sqlite
+* A [mailgun](https://mailgun.net) account (free for up to 200 emails per
+  day - alternatively send a pull request to support the symfony mailer)
+
 Installation
 ------------
 
@@ -30,4 +38,16 @@ Using ruby-fpm and ant you can generate a debian package of this application.
 Usage
 -----
 
-To import a repository run "app/console license:import [url to repository]"
+To import a repository run
+
+    app/console license:import [url to repository]
+
+The URL must be the https git repository URL, for example
+https://github.com/jackalope/orm.git
+
+Then log in with `admin` and the value you set in the *password* parameters.yml
+field. Now visit the "Authors" tab to check if the emails make sense and
+optionally mark commits as trivial.
+
+Finally, go to the projects page, hit the "Send Emails" button and wait
+for your contributors to confirm the license change.
