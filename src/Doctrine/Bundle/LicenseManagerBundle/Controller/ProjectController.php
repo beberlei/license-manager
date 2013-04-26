@@ -1,6 +1,7 @@
 <?php
 namespace Doctrine\Bundle\LicenseManagerBundle\Controller;
 
+use Buzz\Message\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Extra;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -77,6 +78,7 @@ class ProjectController extends Controller
 
         $client = new \Buzz\Browser(new \Buzz\Client\Curl);
         $headers = array('Authorization: Basic ' . base64_encode($this->container->getParameter('mailgun_apikey')));
+        $mailgunUser = $this->container->getParameter('mailgun_username');
         $emails = array();
 
         foreach ($authors as $author) {
@@ -94,16 +96,26 @@ class ProjectController extends Controller
             $expected = sha1($this->container->getParameter('secret') . $author->getId() . $author->getEmail());
             $link = $this->generateUrl('author_approve', array('id' => $author->getId(), 'hash' => $expected), true);
 
+            $from = $this->container->getParameter('email_sender');
+            $subject = $this->container->getParameter('email_subject');
+
             $content = http_build_query(array(
-                'from'    => 'Benjamin Eberlei <kontakt@beberlei.de>',
+                'from'    => $from,
                 'to'      => $author->getEmail(),
-                'subject' => 'Your answer needed: Doctrine PHP Project License Change',
+                'subject' => $subject,
                 'text'    => $this->renderView('DoctrineLicenseManagerBundle:Project:email.txt.twig', array(
                     'author' => $author,
                     'link'   => $link
                 ))
             ));
-            $client->post('https://api.mailgun.net/v2/doctrine.mailgun.org/messages', $headers, $content);
+            /** @var $response Response */
+            $response = $client->post('https://api.mailgun.net/v2/' . $mailgunUser . '.mailgun.org/messages', $headers, $content);
+            if ($response->isSuccessful()) {
+                $this->get('logger')->info('Sent email to ' . $author->getEmail());
+            } else {
+                $this->get('logger')->error('Failed to send email to ' . $author->getEmail());
+                $this->get('logger')->error((string) $response);
+            }
         }
 
         return $this->redirect($this->generateUrl('licenses_projects'));
