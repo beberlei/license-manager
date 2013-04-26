@@ -13,6 +13,8 @@ parameters:
 
     locale:            en
     secret:            ThisTokenIsNotSoSecretChangeIt
+    mailgun_username:  doctrine
+    # in the form api:key-111xxx111
     mailgun_apikey:    ~
 
     # the admin login password
