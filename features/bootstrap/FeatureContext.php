@@ -24,4 +24,28 @@ class FeatureContext extends BehatContext
     public function __construct(array $parameters)
     {
     }
+
+    /**
+     * @When /^I import project "([^"]*)"$/
+     */
+    public function iImportProject($repositoryUrl)
+    {
+        exec("php app/console license:import " . escapeshellarg($repositoryUrl));
+    }
+
+    /**
+     * @Then /^project "([^"]*)" should exist$/
+     */
+    public function projectShouldExist($arg1)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Given /^project "([^"]*)" should have "([^"]*)" confirmed code-changes$/
+     */
+    public function projectShouldHaveConfirmedCodeChanges($arg1, $arg2)
+    {
+        throw new PendingException();
+    }
 }
