@@ -7,7 +7,7 @@
     {% endstylesheets %}
     <style type="text/css">
         <!--
-        body { margin-top: 80px; font-size: 12pt; }
+        body { margin-top: 60px; margin-bottom: 80px; font-size: 12pt; }
         p { font-size: 12pt; line-height: 17pt; }
         -->
     </style>
@@ -17,7 +17,7 @@
 <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container">
-            <a href="{{ path('licenses_projects') }}" class="brand">{{ short_title }}</a>
+            <a href="{{ path('homepage') }}" class="brand">License Switcher</a>
 
             <ul class="nav">
                 <li><a href="{{ path('licenses_projects') }}">Projects</a></li>
@@ -46,6 +46,24 @@
         <p>{{ long_title }}</p>
     {% endblock %}
 
+</div>
+
+<div class="navbar navbar-fixed-bottom">
+    <div class="navbar-inner">
+        <div class="container">
+            <div class="row">
+                <div class="span6">
+                    <p class="navbar-text">
+                        <a href="{{ path('imprint') }}">{% trans %}Imprint{% endtrans %}</a>
+                    </p>
+                </div>
+
+                <div class="span6">
+                    <p class="navbar-text"><small><a href="http://qafoo.com">Developed by Qafoo GmbH</a></small></p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div id="commitDetails" class="modal" style="display: none;">

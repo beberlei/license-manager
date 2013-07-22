@@ -13,11 +13,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/")
+     * @Route("/", name="homepage")
+     * @Template()
      */
     public function indexAction()
     {
-        return $this->redirect($this->generateUrl('licenses_projects'));
+        return array();
     }
 
     /**
@@ -58,5 +59,12 @@ class DefaultController extends Controller
     public function logoutAction()
     {
 
+    }
+
+    /**
+     * @Route("/imprint", name="imprint")
+     */
+    public function imprintAction()
+    {
     }
 }

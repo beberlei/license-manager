@@ -1,0 +1,54 @@
+{% extends "DoctrineLicenseManagerBundle::layout.html.twig" %}
+
+{% block content %}
+<div class="row">
+    <div class="span12">
+        <h2>Welcome to the Open-Source License Switcher project</h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="span6">
+        <p>The world of open-source licensing is tricky. Open-source licenses are not always compatible to each other and picking the wrong license can harm the apdotion of your project depending on the ecosystem you are targeting.</p>
+
+        <p>Changing the license of an open-source project is a big undertacking. You need the consent of all committers if they haven't given you the rights through a CLA or FLA.</p>
+
+        <p>The Open-Source License Switcher project helps you change the license of your project by offering tools to ask all the contributors for their permission to change the license. The project was originally born out of the license change from the PHP project Doctrine from LGPL to MIT.</p>
+
+    </div>
+
+    <div class="span6">
+        <p>The Open-Source License Switcher project is hosted, developed and supported by Qafoo, a german consulting company for quality insurance in PHP and javascript projects.</p>
+
+        <p align="center"><a href="http://qafoo.com"><img width="228" height="63" src="{{ asset('bundles/doctrinelicensemanager/images/logo.png') }}" /></a></p>
+
+        <p>We are fans of open-source and publish projects under a varity of permissive and restrive licenses. We believe that every open-source project should have its own perspective on licensing and choose the license that fits best. The license switcher is open-source itself and released under the MIT license.</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="span12">
+        <p align="center"><a href="#" class="btn btn-primary btn-large">Help me switch license</a></p>
+
+        <p><small>We are currently activating license switch projects only after a manual review. This can take some days, we apologize for any inconveniences. Only after the approval the repository is pulled, scanned and emails are sent to all the committers.</small></p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="span12">
+        <h3>Features</h3>
+
+        <ul>
+            <li>Support for Git, Svn, Mercurial, CVS or Bazaar projects by utilizing the excellent <a href="https://github.com/Arbitracker/VCSWrapper">VCSWrapper library</a>.</li>
+            <li>No username+passwords required for committers, login is done through a hashed url.</li>
+            <li>Import all commits along with information about commiter name, files changed, insertions, deletions and the commit message.</li>
+            <li>Manage authors and their email addresses, detect and merge duplicates authors.</li>
+            <li>Send emails to all committers asking for a change in license from one to another <a href="http://opensource.org/">OSI</a> approved license.</li>
+            <li>Statistics about the progress of a license change.</li>
+            <li>Project leads can add custom e-mail and motivation for the license change.</li>
+            <li>Using <a href="http://mailgun.com">Mailgun</a> integration for higher deliverability and to give feedback on bounces.</li>
+        </ul>
+    </div>
+</div>
+
+{% endblock %}
