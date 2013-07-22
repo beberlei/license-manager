@@ -23,6 +23,13 @@
         "kriswallsmith/buzz": "*",
         "incenteev/composer-parameter-handler": "1.0.*"
     },
+    "require-dev": {
+        "behat/behat": "@stable",
+        "behat/mink-extension":          "@stable",
+        "behat/mink-goutte-driver": "1.0.*",
+        "phpunit/phpunit": "3.7.*",
+        "phake/phake": "@stable"
+    },
     "scripts": {
         "post-install-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",

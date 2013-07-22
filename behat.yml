@@ -1,0 +1,13 @@
+default:
+  paths:
+    features: features/
+    bootstrap: %behat.paths.features%/bootstrap
+  context:
+    class: "FeatureContext"
+  formatter:
+    name: progress
+  extensions:
+    Behat\MinkExtension\Extension:
+      base_url: 'http://localhost:8000/app_test.php'
+      default_session: goutte
+      goutte: ~
