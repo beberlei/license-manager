@@ -77,4 +77,17 @@ class FeatureContext extends MinkContext
             new Step\Then('I should see "approve ratio: ' . $approveRatio . '"')
         );
     }
+
+    /**
+     * @Given /^project "([^"]*)" should have author "([^"]*)"$/
+     */
+    public function projectShouldHaveAuthor($project, $author)
+    {
+        return array(
+            new Step\Given('I am on "/licenses/projects"'),
+            new Step\When('I follow "' . $project . '"'),
+            new Step\When('I follow "' . $author . '"'),
+            new Step\Then('I should see "' . $author . '"'),
+        );
+    }
 }

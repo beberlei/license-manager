@@ -7,3 +7,5 @@ Feature: Switch License
         When I import project "https://github.com/beberlei/assert.git"
         Then project "beberlei/assert" should exist
         And project "beberlei/assert" should have "0" confirmed code-changes
+        And project "beberlei/assert" should have author "Benjamin Eberlei"
+        And project "beberlei/assert" should have author "Bastian Feder"
