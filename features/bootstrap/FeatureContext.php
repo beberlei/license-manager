@@ -1,11 +1,16 @@
 <?php
 
-use Behat\Behat\Context\ClosuredContextInterface,
-    Behat\Behat\Context\TranslatedContextInterface,
-    Behat\Behat\Context\BehatContext,
-    Behat\Behat\Exception\PendingException;
-use Behat\Gherkin\Node\PyStringNode,
-    Behat\Gherkin\Node\TableNode;
+use Behat\Behat\Context\ClosuredContextInterface;
+use Behat\Behat\Context\TranslatedContextInterface;
+use Behat\Behat\Context\BehatContext;
+use Behat\Behat\Exception\PendingException;
+use Behat\Behat\Event\SuiteEvent;
+use Behat\Gherkin\Node\PyStringNode;
+use Behat\Gherkin\Node\TableNode;
+use Behat\Behat\Context\Step;
+use Behat\MinkExtension\Context\MinkContext;
+
+use Doctrine\DBAL\DriverManager;
 
 require_once 'PHPUnit/Autoload.php';
 require_once 'PHPUnit/Framework/Assert/Functions.php';
@@ -13,7 +18,7 @@ require_once 'PHPUnit/Framework/Assert/Functions.php';
 /**
  * Features context.
  */
-class FeatureContext extends BehatContext
+class FeatureContext extends MinkContext
 {
     /**
      * Initializes context.
@@ -23,6 +28,23 @@ class FeatureContext extends BehatContext
      */
     public function __construct(array $parameters)
     {
+    }
+
+    /**
+     * @BeforeSuite
+     */
+    static public function beforeSuite(SuiteEvent $event)
+    {
+        $parameters = $event->getContextParameters();
+        $conn = DriverManager::getConnection($parameters['db']);
+
+        $tables = array('commit_audit', 'commit', 'author_audit', 'author', 'project', 'revisions');
+
+        $conn->exec('SET foreign_key_checks = 0;');
+        foreach ($tables as $table) {
+            $conn->exec('TRUNCATE ' . $table);
+        }
+        $conn->exec('SET foreign_key_checks = 1;');
     }
 
     /**
@@ -36,16 +58,23 @@ class FeatureContext extends BehatContext
     /**
      * @Then /^project "([^"]*)" should exist$/
      */
-    public function projectShouldExist($arg1)
+    public function projectShouldExist($project)
     {
-        throw new PendingException();
+        return array(
+            new Step\When('I go to "/licenses/projects"'),
+            new Step\Then('I should see "' . $project . '"'),
+        );
     }
 
     /**
      * @Given /^project "([^"]*)" should have "([^"]*)" confirmed code-changes$/
      */
-    public function projectShouldHaveConfirmedCodeChanges($arg1, $arg2)
+    public function projectShouldHaveConfirmedCodeChanges($project, $approveRatio)
     {
-        throw new PendingException();
+        return array(
+            new Step\Given('I am on "/licenses/projects"'),
+            new Step\When('I follow "' . $project . '"'),
+            new Step\Then('I should see "approve ratio: ' . $approveRatio . '"')
+        );
     }
 }

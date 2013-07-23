@@ -4,10 +4,17 @@ default:
     bootstrap: %behat.paths.features%/bootstrap
   context:
     class: "FeatureContext"
+    parameters:
+        db:
+            driver: pdo_mysql
+            host: 127.0.0.1
+            dbname: licenses
+            user: root
+            password: ~
   formatter:
     name: progress
   extensions:
     Behat\MinkExtension\Extension:
-      base_url: 'http://localhost:8000/app_test.php'
+      base_url: 'http://localhost:8000'
       default_session: goutte
       goutte: ~
