@@ -18,3 +18,20 @@ Feature: Switch License Project
         When I am logged in as admin
         And I am on "/licenses/authors"
         Then I should see a field with "kontakt@beberlei.de"
+
+    Scenario: Approve button not visible for non-admins
+        When I am not an admin
+        And I am on "/licenses/authors/1"
+        Then I should not see "Users approve page"
+        And I should not see a button with "Approve"
+
+    Scenario: Approve button visible for admins
+        When I am logged in as admin
+        And I am on "/licenses/authors/1"
+        Then I should see "Users approve page"
+        And I should see a button with "Approve"
+
+    Scenario: Mark Trivial button visible for admins
+        When I am logged in as admin
+        And I am on "/licenses/authors/1"
+        Then I should see a button with "Mark Trivial"

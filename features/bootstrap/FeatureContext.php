@@ -199,4 +199,38 @@ class FeatureContext extends MinkContext
             throw new \RuntimeException("Element was not found!");
         }
     }
+
+    /**
+     * @When /^I am not an admin$/
+     */
+    public function iAmNotAnAdmin()
+    {
+        return array(new Step\When('I am on "/logout"'));
+    }
+
+    /**
+     * @Given /^I should not see a button with "([^"]*)"$/
+     */
+    public function iShouldNotSeeAButtonWith($text)
+    {
+        $page = $this->getSession()->getPage();
+        $found = $page->find('css', 'input[value="' . $text . '"]');
+
+        if ($found !== null) {
+            throw new \RuntimeException("Element was not found!");
+        }
+    }
+
+    /**
+     * @Given /^I should see a button with "([^"]*)"$/
+     */
+    public function iShouldSeeAButtonWith($text)
+    {
+        $page = $this->getSession()->getPage();
+        $found = $page->find('css', 'input[value="' . $text . '"]');
+
+        if ($found === null) {
+            throw new \RuntimeException("Element was not found!");
+        }
+    }
 }
