@@ -11,6 +11,8 @@ default:
             dbname: licenses
             user: root
             password: ~
+        secret: ThisTokenIsNotSoSecretChangeIt
+        admin_password: 123
   formatter:
     name: progress
   extensions:

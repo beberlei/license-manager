@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "caa71e0fbd7997eedb6a25eedc02ee67",
+    "hash": "85a0a95da0b30a4e508e89194330efd3",
     "packages": [
         {
             "name": "doctrine/common",
@@ -1610,21 +1610,21 @@
         },
         {
             "name": "behat/mink-goutte-driver",
-            "version": "v1.0.8",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/MinkGoutteDriver.git",
-                "reference": "v1.0.8"
+                "reference": "fa1b073b48761464feb0b05e6825da44b20118d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/MinkGoutteDriver/zipball/v1.0.8",
-                "reference": "v1.0.8",
+                "url": "https://api.github.com/repos/Behat/MinkGoutteDriver/zipball/fa1b073b48761464feb0b05e6825da44b20118d8",
+                "reference": "fa1b073b48761464feb0b05e6825da44b20118d8",
                 "shasum": ""
             },
             "require": {
                 "behat/mink-browserkit-driver": ">=1.0.5,<1.2.0",
-                "fabpot/goutte": ">=1.0.1,<1.1",
+                "fabpot/goutte": "~1.0.1",
                 "php": ">=5.3.1"
             },
             "type": "mink-driver",
@@ -1657,7 +1657,7 @@
                 "headless",
                 "testing"
             ],
-            "time": "2013-04-13 23:30:23"
+            "time": "2013-07-03 18:43:54"
         },
         {
             "name": "fabpot/goutte",
@@ -2332,6 +2332,7 @@
         "pagerfanta/pagerfanta": 20,
         "behat/behat": 0,
         "behat/mink-extension": 0,
+        "behat/mink-goutte-driver": 20,
         "phake/phake": 0
     },
     "platform": {

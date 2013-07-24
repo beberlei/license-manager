@@ -5,6 +5,7 @@ use Behat\Behat\Context\TranslatedContextInterface;
 use Behat\Behat\Context\BehatContext;
 use Behat\Behat\Exception\PendingException;
 use Behat\Behat\Event\SuiteEvent;
+use Behat\Behat\Event\FeatureEvent;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Behat\Context\Step;
@@ -20,6 +21,9 @@ require_once 'PHPUnit/Framework/Assert/Functions.php';
  */
 class FeatureContext extends MinkContext
 {
+    private $secret;
+    private $adminPassword;
+
     /**
      * Initializes context.
      * Every scenario gets it's own context object.
@@ -28,12 +32,14 @@ class FeatureContext extends MinkContext
      */
     public function __construct(array $parameters)
     {
+        $this->secret = $parameters['secret'];
+        $this->adminPassword = $parameters['admin_password'];
     }
 
     /**
-     * @BeforeSuite
+     * @BeforeFeature
      */
-    static public function beforeSuite(SuiteEvent $event)
+    static public function beforeFeature(FeatureEvent $event)
     {
         $parameters = $event->getContextParameters();
         $conn = DriverManager::getConnection($parameters['db']);
@@ -89,5 +95,57 @@ class FeatureContext extends MinkContext
             new Step\When('I follow "' . $author . '"'),
             new Step\Then('I should see "' . $author . '"'),
         );
+    }
+
+    /**
+     * @When /^project "([^"]*)" wants to switch license$/
+     */
+    public function projectWantsToSwitchLicense($repositoryUrl)
+    {
+        exec("php app/console license:import " . escapeshellarg($repositoryUrl));
+    }
+
+    /**
+     * @Then /^the following users approve licenses:$/
+     */
+    public function theFollowingUsersApproveLicenses(TableNode $table)
+    {
+        $hash = $table->getHash();
+        $steps = array();
+
+        foreach ($hash as $row) {
+            $hash = sha1($this->secret . $row['ID'] . $row['Email']);
+
+            $steps[] = new Step\When('I am on "/licenses/authors/' . $row['ID'] . '/approve?hash=' . $hash . '"');
+            $steps[] = new Step\When('I select "I approve" from "licenses_approve[approved]"');
+            $steps[] = new Step\When('I press "Save Answer"');
+        }
+
+        return $steps;
+    }
+
+    /**
+     * @Then /^the project "([^"]*)" should have an author approve ratio bigger than "(\d+)"%$/
+     */
+    public function theProjectShouldHaveAnAuthorApproveRatioBiggerThan($project, $ratio)
+    {
+        return array(
+            new Step\Given('I am on "/licenses/projects"'),
+            new Step\When('I follow "' . $project . '"'),
+            new Step\Then('I should see the value in ".app-approve" is bigger than "' . $ratio . '"')
+        );
+    }
+
+    /**
+     * @Then /^I should see the value in "([^"]*)" is bigger than "([^"]*)"$/
+     */
+    public function theValueShouldBeBiggerThan($selector, $value)
+    {
+        $page = $this->getSession()->getPage();
+        $found = (int)$page->find('css', $selector)->getText();
+
+        if ($found < $value) {
+            throw new \RuntimeException("The value '" . $found . "' is not bigger than '" . $value . "'");
+        }
     }
 }

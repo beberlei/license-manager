@@ -1,4 +1,4 @@
-Feature: Switch License
+Feature: Switch License Project
     As a project owner
     To switch the license of my project
     I want to create and import the project
