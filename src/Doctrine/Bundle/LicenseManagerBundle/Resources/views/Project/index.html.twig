@@ -12,7 +12,7 @@
 {% for data in projects %}
     <tr>
         <td><a href="{{ path('licenses_authors', {'project': data.project.id} ) }}">{{ data.project.name }}</a></td>
-        <td>{{ data.ratio }}%</td>
+        <td><span data-name="{{ data.project.name }}" class="app-approve">{{ data.ratio }}</span>%</td>
         <td>{{ data.ratio_trivial }}%</td>
     </tr>
 {% endfor %}

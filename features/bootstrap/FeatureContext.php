@@ -148,4 +148,15 @@ class FeatureContext extends MinkContext
             throw new \RuntimeException("The value '" . $found . "' is not bigger than '" . $value . "'");
         }
     }
+
+    /**
+     * @Then /^the project "([^"]*)" should have a code approval ratio bigger than "(\d+)"%$/
+     */
+    public function theProjectShouldHaveACodeApprovalRatioBiggerThan($project, $ratio)
+    {
+        return array(
+            new Step\Given('I am on "/licenses/projects"'),
+            new Step\Then('I should see the value in "*[data-name=\'' . $project . '\'].app-approve" is bigger than "' . $ratio . '"')
+        );
+    }
 }

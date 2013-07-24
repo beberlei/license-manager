@@ -9,3 +9,4 @@ Feature: Approve License Switch
             | ID | Email               |
             | 1  | kontakt@beberlei.de |
         Then the project "beberlei/assert" should have an author approve ratio bigger than "5"%
+        Then the project "beberlei/assert" should have a code approval ratio bigger than "50"%
