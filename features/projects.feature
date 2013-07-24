@@ -9,3 +9,12 @@ Feature: Switch License Project
         And project "beberlei/assert" should have "0" confirmed code-changes
         And project "beberlei/assert" should have author "Benjamin Eberlei"
         And project "beberlei/assert" should have author "Bastian Feder"
+
+    Scenario: E-Mail not visible for non-admin
+        When I am on "/licenses/authors"
+        Then I should not see a field with "kontakt@beberlei.de"
+
+    Scenario: E-Mail visible for admin
+        When I am logged in as admin
+        And I am on "/licenses/authors"
+        Then I should see a field with "kontakt@beberlei.de"

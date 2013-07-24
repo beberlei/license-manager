@@ -159,4 +159,44 @@ class FeatureContext extends MinkContext
             new Step\Then('I should see the value in "*[data-name=\'' . $project . '\'].app-approve" is bigger than "' . $ratio . '"')
         );
     }
+
+    /**
+     * @When /^I am logged in as admin$/
+     */
+    public function iAmLoggedInAsAdmin()
+    {
+        return array(
+            new Step\Given('I am on "/login"'),
+            new Step\When('I fill in "_username" with "admin"'),
+            new Step\When('I fill in "_password" with "' . $this->adminPassword . '"'),
+            new Step\When('I press "login"'),
+            new Step\Then('I should be on "/"'),
+        );
+    }
+
+    /**
+     * @Then /^I should not see a field with "([^"]*)"$/
+     */
+    public function iShouldNotSeeAFieldWith($text)
+    {
+        $page = $this->getSession()->getPage();
+        $found = $page->find('css', 'input[value="' . $text . '"]');
+
+        if ($found !== null) {
+            throw new \RuntimeException("Element was found!");
+        }
+    }
+
+    /**
+     * @Then /^I should see a field with "([^"]*)"$/
+     */
+    public function iShouldSeeAFieldWith($text)
+    {
+        $page = $this->getSession()->getPage();
+        $found = $page->find('css', 'input[value="' . $text . '"]');
+
+        if ($found === null) {
+            throw new \RuntimeException("Element was not found!");
+        }
+    }
 }
