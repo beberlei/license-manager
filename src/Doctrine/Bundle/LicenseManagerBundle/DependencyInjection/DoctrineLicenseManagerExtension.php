@@ -24,5 +24,7 @@ class DoctrineLicenseManagerExtension extends Extension
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
+
+        $container->setAlias('doctrine_license_manager.mailer', 'doctrine_license_manager.mailer.' . $config['mailer']);
     }
 }

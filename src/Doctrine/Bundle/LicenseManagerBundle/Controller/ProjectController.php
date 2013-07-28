@@ -145,7 +145,7 @@ class ProjectController extends Controller
      * @Extra\Route("/licenses/projects/{id}/send", name="licenses_project_send")
      * @Extra\Method("POST")
      */
-    public function sendAction($id)
+    public function sendAction($id, Request $request)
     {
         $this->assertIsRole('ROLE_ADMIN');
 
@@ -166,9 +166,7 @@ class ProjectController extends Controller
 
         $authors = $qb->getQuery()->setParameter(1, $id)->getResult();
 
-        $client = new \Buzz\Browser(new \Buzz\Client\Curl);
-        $headers = array('Authorization: Basic ' . base64_encode($this->container->getParameter('mailgun_apikey')));
-        $mailgunDomain = $this->container->getParameter('mailgun_domain');
+        $mailer = $this->container->get('doctrine_license_manager.mailer');
         $emails = array();
 
         foreach ($authors as $author) {
@@ -189,19 +187,18 @@ class ProjectController extends Controller
                 'hash' => $expected,
             ), true);
 
-            $content = http_build_query(array(
-                'from'    => 'Benjamin Eberlei <kontakt@beberlei.de>',
-                'to'      => $author->getEmail(),
-                'subject' => sprintf('Your answer needed: %s License Change', $project->getName()),
-                'text'    => $this->renderView('DoctrineLicenseManagerBundle:Project:email.txt.twig', array(
+            $mailer->sendTextMessage(
+                'Benjamin Eberlei <kontakt@beberlei.de>', $author->getEmail(),
+                sprintf('Your answer needed: %s License Change', $project->getName()),
+                $this->renderView('DoctrineLicenseManagerBundle:Project:email.txt.twig', array(
                     'project' => $project,
                     'author' => $author,
                     'link'   => $link
                 ))
-            ));
-
-            $client->post('https://api.mailgun.net/v2/' . $mailgunDomain . '/messages', $headers, $content);
+            );
         }
+
+        $request->getSession()->getFlashBag()->set('success', 'Sent request for approval emails to ' . count($emails) . ' contributors.');
 
         return $this->redirect($this->generateUrl('licenses_projects'));
     }
