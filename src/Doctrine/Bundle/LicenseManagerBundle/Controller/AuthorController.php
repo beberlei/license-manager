@@ -4,6 +4,7 @@ namespace Doctrine\Bundle\LicenseManagerBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Extra;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
 
@@ -103,10 +104,10 @@ class AuthorController extends Controller
     }
 
     /**
-     * @Extra\Route("/licenses/authors/{id}/approve", name="licenses_author_approve")
+     * @Extra\Route("/licenses/authors/{id}/admin-approve", name="licenses_author_approve")
      * @Extra\Method("POST")
      */
-    public function approveAction($id)
+    public function approveAction($id, Request $request)
     {
         $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
         $author = $entityManager->find('Doctrine\Bundle\LicenseManagerBundle\Entity\Author', $id);
@@ -121,7 +122,7 @@ class AuthorController extends Controller
 
     /**
      * @Extra\Route("/licenses/authors/{id}/approve", name="author_approve")
-     * @Extra\Method("GET")
+     * @Extra\Method({"GET", "POST"})
      * @Extra\Template
      */
     public function authorApproveAction($id)
