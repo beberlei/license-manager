@@ -109,6 +109,8 @@ class AuthorController extends Controller
      */
     public function approveAction($id, Request $request)
     {
+        $this->assertIsRole('ROLE_ADMIN');
+
         $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
         $author = $entityManager->find('Doctrine\Bundle\LicenseManagerBundle\Entity\Author', $id);
 
