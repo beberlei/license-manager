@@ -37,6 +37,10 @@ class ImportService
         $projectRepository = $this->entityManager->getRepository('Doctrine\Bundle\LicenseManagerBundle\Entity\Project');
         $project = $projectRepository->findOneBy(array('githubUrl' => $url));
 
+        if ($project->confirmed()) {
+            throw new \RuntimeException("Cannot import already confirmed project");
+        }
+
         if ($project === null) {
             $project = new Project($name, $url);
         }

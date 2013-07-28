@@ -21,7 +21,7 @@
 
             <ul class="nav">
                 <li><a href="{{ path('licenses_projects') }}">Projects</a></li>
-                <li><a href="{{ path('licenses_authors') }}">Authors</a></li>
+                <li><a href="{{ path('licenses_project_create') }}">Help me switch license</a></li>
                 {% if not app.security.isGranted('ROLE_USER') %}
                     <li><a href="{{ path('login') }}">Login</a></li>
                 {% else %}
@@ -43,7 +43,6 @@
     {% endif %}
 
     {% block content %}
-        <p>{{ long_title }}</p>
     {% endblock %}
 
 </div>

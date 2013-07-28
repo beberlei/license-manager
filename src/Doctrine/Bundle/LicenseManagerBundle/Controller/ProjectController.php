@@ -3,6 +3,10 @@ namespace Doctrine\Bundle\LicenseManagerBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Extra;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+
+use Doctrine\Bundle\LicenseManagerBundle\Form\CreateProjectType;
+use Doctrine\Bundle\LicenseManagerBundle\Entity\Project;
 
 /**
  * Author Controller
@@ -36,6 +40,36 @@ class ProjectController extends Controller
         }
 
         return array('projects' => $projects);
+    }
+
+    /**
+     * @Extra\Route("/licenses/projects/create", name="licenses_project_create")
+     * @Extra\Method({"GET", "POST"})
+     * @Extra\Template
+     */
+    public function createAction(Request $request)
+    {
+        $form = $this->createForm(new CreateProjectType());
+
+        if ($request->getMethod() === 'POST') {
+            $form->bind($request);
+
+            if ($form->isValid()) {
+                $createProject = $form->getData();
+                $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
+
+                $project = new Project($createProject->name, $createProject->githubUrl);
+
+                $entityManager->persist($project);
+                $entityManager->flush();
+
+                $request->getSession()->getFlashBag()->set('success', 'You created a new license switch project. We will evaluate your request and respond timely.');
+
+                return $this->redirect($this->generateUrl('licenses_projects'));
+            }
+        }
+
+        return array('form' => $form->createView());
     }
 
     /**

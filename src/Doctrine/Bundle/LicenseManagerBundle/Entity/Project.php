@@ -30,6 +30,14 @@ class Project
     }
 
     /**
+     * @return bool
+     */
+    public function confirmed()
+    {
+        return $this->confirmed;
+    }
+
+    /**
      * Get id.
      *
      * @return id.

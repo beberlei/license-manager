@@ -1,0 +1,24 @@
+{% extends "DoctrineLicenseManagerBundle::layout.html.twig" %}
+
+{% block content %}
+<div class="row">
+    <div class="span12">
+        <h2>Create Project</h2>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="span6">
+        <form method="post" action="{{ path('licenses_project_create') }}">
+            {{ form_widget(form) }}
+
+            <button class="btn btn-primary">Create Project</button>
+        </form>
+    </div>
+
+    <div class="span6">
+        <p>We are currently activating license switch projects only after a manual review. This can take some days, we apologize for any inconveniences. Only after the approval the repository is imported and emails are sent to all the committers.</p>
+    </div>
+</div>
+{% endblock %}
