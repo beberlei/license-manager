@@ -159,8 +159,7 @@ class ProjectController extends Controller
 
         $qb = $em->createQueryBuilder();
         $qb->from('Doctrine\Bundle\LicenseManagerBundle\Entity\Author', 'a')
-           ->select('DISTINCT a')
-           ->innerJoin('a.commits', 'c')
+           ->select('a')
            ->where('a.approved = 0')
            ->andWhere('a.project = ?1');
 
