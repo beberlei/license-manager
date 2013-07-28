@@ -11,9 +11,9 @@ class Project
 {
     /** @ORM\Id @ORM\GeneratedValue @ORM\Column(type="integer") */
     protected $id;
-    /** @ORM\Column(unique=true) */
-    protected $name;
     /** @ORM\Column */
+    protected $name;
+    /** @ORM\Column(unique=true) */
     protected $githubUrl;
     /** @ORM\Column(type="boolean") */
     protected $confirmed = false;

@@ -5,19 +5,21 @@ use Doctrine\Bundle\LicenseManagerBundle\Entity\Commit;
 use Doctrine\Bundle\LicenseManagerBundle\Entity\Author;
 use Doctrine\Bundle\LicenseManagerBundle\Entity\Project;
 
+use Doctrine\ORM\EntityManager;
+
 class ImportService
 {
-    private $em;
+    private $entityManager;
     private $emails;
 
-    public function __construct($em)
+    public function __construct(EntityManager $entityManager)
     {
-        $this->em = $em;
+        $this->entityManager = $entityManager;
     }
 
     public function addEmails(array $emails)
     {
-        $this->emails = $emails;
+        $this->entityManagerails = $emails;
     }
 
     public function import($url)
@@ -32,10 +34,16 @@ class ImportService
 
         $name = substr(str_replace("https://github.com/", "", $url), 0, -4);
 
-        $project = new Project($name, $url);
+        $projectRepository = $this->entityManager->getRepository('Doctrine\Bundle\LicenseManagerBundle\Entity\Project');
+        $project = $projectRepository->findOneBy(array('githubUrl' => $url));
+
+        if ($project === null) {
+            $project = new Project($name, $url);
+        }
+
         $project->markConfirmed();
 
-        $this->em->persist($project);
+        $this->entityManager->persist($project);
         $dirName = str_replace("/", "-", $name);
 
         chdir("/tmp");
@@ -47,7 +55,7 @@ class ImportService
 
         $authors = array();
         $dql = "SELECT a FROM Doctrine\Bundle\LicenseManagerBundle\Entity\Author a";
-        foreach ($this->em->createQuery($dql)->getResult() as $author) {
+        foreach ($this->entityManager->createQuery($dql)->getResult() as $author) {
             $authors[$author->getEmail()] = $author;
         }
 
@@ -58,12 +66,12 @@ class ImportService
                 if ($sha1) {
                     if (!isset($authors[$email])) {
                         $authors[$email] = new Author($name, $email);
-                        $this->em->persist($authors[$email]);
+                        $this->entityManager->persist($authors[$email]);
                     }
 
                     if ( $changeLine) {
                         $commit = new Commit($sha1, $project, $authors[$email], $changeLine, new \DateTime('@' . $time));
-                        $this->em->persist($commit);
+                        $this->entityManager->persist($commit);
                         $changeLine = null;
                     }
                 }
@@ -72,8 +80,8 @@ class ImportService
 
                 // example: @625475ce-881a-0410-a577-b389adb331d8
                 if (preg_match('(@[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})', $email)) {
-                    if (isset($this->emails[$name]) && $this->emails[$name] != "NULL") {
-                        $email = $this->emails[$name];
+                    if (isset($this->entityManagerails[$name]) && $this->entityManagerails[$name] != "NULL") {
+                        $email = $this->entityManagerails[$name];
                     }
                 }
 
@@ -84,7 +92,7 @@ class ImportService
             }
         }
 
-        $this->em->flush();
+        $this->entityManager->flush();
     }
 }
 
