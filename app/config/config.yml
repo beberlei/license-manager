@@ -63,3 +63,6 @@ simple_things_entity_audit:
     audited_entities:
         - Doctrine\Bundle\LicenseManagerBundle\Entity\Author
         - Doctrine\Bundle\LicenseManagerBundle\Entity\Commit
+
+doctrine_license_manager:
+    mailer: %mailer%

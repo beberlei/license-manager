@@ -98,6 +98,16 @@ class ProjectController extends Controller
                 $entityManager->flush();
 
                 $request->getSession()->getFlashBag()->set('success', 'You created a new license switch project. We will evaluate your request and respond timely.');
+                $mailer = $this->container->get('doctrine_license_manager.mailer');
+                $mailer->sendTextMessage(
+                    $this->container->getParameter('mailer_sender'),
+                    $this->container->getParameter('mailer_admin_email'),
+                    'New License Switch Project registered',
+                    sprintf(
+                        "Hello!\n\nA new project was registered on License Switcher:\n\nName: %s\nURL: %s\nPage Message:\n\n%s\n\nE-Mail Message:\n\n%s",
+                        $createProject->name, $createProject->githubUrl, $createProject->pageMessage, $createProject->emailMessage
+                    )
+                );
 
                 return $this->redirect($this->generateUrl('licenses_projects'));
             }

@@ -13,93 +13,11 @@ parameters:
 
     locale:            en
     secret:            ThisTokenIsNotSoSecretChangeIt
-    mailgun_apikey:    ~ 
+    mailer: mailgun
+    mailgun_domain:    ~
+    mailgun_apikey:    ~
+    mailer_sender:     benjamin@qafoo.com
+    mailer_admin_email: benjamin@qafoo.com
 
     password: 123
 
-    short_title: Doctrine License Switch
-    long_title: We are trying to change the license of Doctrine Projects from LGPL to MIT. This tool helps us managing this effort.
-    long_text: |
-        <p>Hello Doctrine committer,</p>
-
-        <p>We have found your email <strong>{{ author.email }}</strong>
-        on the mailing list, bugtrackers, website or the Git commit logs.</p>
-
-        <p>We contact you, because the Doctrine Core Team wants to change the license of all Doctrine subprojects
-        from <a href="http://www.gnu.org/licenses/lgpl-2.1.html" target="_blank">LGPL 2.1</a>
-        to <a href="http://www.opensource.org/licenses/mit-license.php" target="_blank">MIT license</a>.
-        To be able to do this we have to ask for permission
-        of every committer. You are one of the nearly 400 Doctrine committers that have
-        taken part in this projects journey.</p>
-
-        <p style="margin-top: 50px;"><strong>Do you allow the Doctrine Project to change the license of the code with your copyright from LGPL to MIT?</strong></p>
-
-        <p>Before you make your decision you can <a href="{{ path('licenses_author_view', {'id': author.id}) }}" target="_blank">review all the commits you made</a>.</p>
-
-        <form method="post" action="{{ path('author_approve', {'id': author.id, 'hash': expectedHash}) }}" class="form-inline">
-            {{ form_errors(form.approved) }}
-            {{ form_widget(form.approved) }}
-
-            {{ form_rest(form) }}
-
-            <input type="submit" value="Save Answer" class="btn btn-primary" />
-        </form>
-
-        <h3 style="margin-top: 50px">Why do we want to change the license?</h3>
-
-        <p>We believe the MIT license allows our users to use Doctrine more easily and with less hassle.
-        MIT License is one of the so called "permissive" licenses that imposes very little
-        restrictions on users and companies. Users would be allowed to copy, change and redistribute
-        Doctrine in their projects without the need to think for license violations.</p>
-
-        <p>LGPL in contrast is a bit more complicated with regard to binding Doctrine in commercial
-        projects and selling these. Although it should actually be unproblematic to use as a library,
-        the legal responsibilities are not fully understood. Many companies, mostly in the US, chose to
-        ban the use of LGPL projects all together for "better safe than sorry" reasons.</p>
-
-        <p>We have been contacted by several individuals and companies in the last years that asked for relicensing of
-        Doctrine and we finally think its a good step to get this process started.</p>
-
-        <p>This would allow individuals and companies to use Doctrine in any kind of project, potentially
-        widening the reach of the Doctrine project even more.</p>
-
-        <p>But there are also downsides with changing to MIT. Potentially somebody could use the Doctrine code and
-        sell a proprietary version to its customers. However given the rate of innovation of the Doctrine project
-        at the moment with a half-yearly release cycle and a large amount of committers we don't think this
-        is likely to happen. Also with the high quality of the library we don't see that companies would want
-        to pay money for products on top of Doctrine that add value to a project with already so many opensource features.</p>
-
-        <p>
-        Another thing is that individuals and companies don't have to contribute their changes back
-        to the Doctrine project when they are part of a commercial product. However this is not a big issue in
-        our opinion as we didn't have the capacity to enforce this part of the LGPL anyways. Additionally
-        most of the code that we get dropped is not very easily integrated into the reusable, stable version of Doctrine.
-        </p>
-
-        <p>History of other projects have shown these two scenarios are not to fear. Many projects today have
-        permissive licenses, such as PHP, Apache, Symfony &amp; Spring Framework and many others. To the contrary
-        these kind of projects are often thriving with contributions.</p>
-
-        <p>We would be very grateful to receive your permission,</p>
-
-        <p>The Doctrine Core Team</p>
-
-        <p><small>Guilherme Blanco, Benjamin Eberlei, Jonathan Wage</small></p>
-    email_text: |
-        Hello Doctrine committer,
-
-        We have found your email {{ author.email }} on the mailing list, bugtrackers, website or the Git commit logs.
-
-        We contact you, because the Doctrine Core Team wants to change the license of all Doctrine subprojects from LGPL to MIT license. To be able to do this we have to ask for permission of every committer. You are one of the nearly 400 Doctrine committers that have taken part in this projects journey.
-
-        Please visit the following link where you can enter your answer:
-
-        {{ link }}
-
-        Please take a minute and answer to our request.
-
-        If you have problems or questions using the system don't hesitate to contact
-        us.
-
-        greetings,
-        the Doctrine Core Team (Guilherme Blanco, Benjamin Eberlei, Jonathan Wage, ..)
