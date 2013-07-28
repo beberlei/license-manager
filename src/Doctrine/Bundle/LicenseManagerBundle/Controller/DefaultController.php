@@ -62,9 +62,11 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Template()
      * @Route("/imprint", name="imprint")
      */
     public function imprintAction()
     {
+        return array();
     }
 }
