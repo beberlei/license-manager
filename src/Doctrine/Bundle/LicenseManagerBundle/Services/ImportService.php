@@ -10,20 +10,16 @@ use Doctrine\ORM\EntityManager;
 class ImportService
 {
     private $entityManager;
-    private $emails;
 
     public function __construct(EntityManager $entityManager)
     {
         $this->entityManager = $entityManager;
     }
 
-    public function addEmails(array $emails)
+    public function import(Project $project)
     {
-        $this->entityManagerails = $emails;
-    }
+        $url = $project->getGithubUrl();
 
-    public function import($url)
-    {
         if (strpos($url, "https://github.com/") === false) {
             throw new \InvalidArgumentException("Url should be a github repository.");
         }
@@ -34,15 +30,8 @@ class ImportService
 
         $name = substr(str_replace("https://github.com/", "", $url), 0, -4);
 
-        $projectRepository = $this->entityManager->getRepository('Doctrine\Bundle\LicenseManagerBundle\Entity\Project');
-        $project = $projectRepository->findOneBy(array('githubUrl' => $url));
-
         if ($project->confirmed()) {
             throw new \RuntimeException("Cannot import already confirmed project");
-        }
-
-        if ($project === null) {
-            $project = new Project($name, $url);
         }
 
         $project->markConfirmed();
@@ -58,10 +47,6 @@ class ImportService
         $lines = explode("\n", $output);
 
         $authors = array();
-        $dql = "SELECT a FROM Doctrine\Bundle\LicenseManagerBundle\Entity\Author a";
-        foreach ($this->entityManager->createQuery($dql)->getResult() as $author) {
-            $authors[$author->getEmail()] = $author;
-        }
 
         $sha1 = $name = $email = $subject = $changeLine = $time = null;
         foreach ($lines as $line) {
@@ -69,11 +54,11 @@ class ImportService
             if (substr_count($line, ";") >= 3) {
                 if ($sha1) {
                     if (!isset($authors[$email])) {
-                        $authors[$email] = new Author($name, $email);
+                        $authors[$email] = new Author($name, $email, $project);
                         $this->entityManager->persist($authors[$email]);
                     }
 
-                    if ( $changeLine) {
+                    if ($changeLine) {
                         $commit = new Commit($sha1, $project, $authors[$email], $changeLine, new \DateTime('@' . $time));
                         $this->entityManager->persist($commit);
                         $changeLine = null;
@@ -81,13 +66,6 @@ class ImportService
                 }
 
                 list ($sha1, $name, $email, $time, $subject) = explode(";", $line, 5);
-
-                // example: @625475ce-881a-0410-a577-b389adb331d8
-                if (preg_match('(@[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})', $email)) {
-                    if (isset($this->entityManagerails[$name]) && $this->entityManagerails[$name] != "NULL") {
-                        $email = $this->entityManagerails[$name];
-                    }
-                }
 
             } else if (trim($line) == "") {
                 continue;

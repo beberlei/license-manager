@@ -58,7 +58,7 @@ class FeatureContext extends MinkContext
      */
     public function iImportProject($repositoryUrl)
     {
-        exec("php app/console license:import " . escapeshellarg($repositoryUrl));
+        return $this->projectWantsToSwitchLicense($repositoryUrl);
     }
 
     /**
@@ -102,7 +102,19 @@ class FeatureContext extends MinkContext
      */
     public function projectWantsToSwitchLicense($repositoryUrl)
     {
-        exec("php app/console license:import " . escapeshellarg($repositoryUrl));
+        $name = substr(str_replace("https://github.com/", "", $repositoryUrl), 0, -4);
+
+        return array(
+            new Step\Given('I am on "/licenses/projects/create"'),
+            new Step\When('I fill in "create_project[name]" with "' . $name . '"'),
+            new Step\When('I fill in "create_project[githubUrl]" with "' . $repositoryUrl . '"'),
+            new Step\When('I fill in "create_project[pageMessage]" with "Page Message"'),
+            new Step\When('I fill in "create_project[emailMessage]" with "Mail Message"'),
+            new Step\When('I press "Create Project"'),
+            new Step\Given('I am logged in as admin'),
+            new Step\Given('I am on "/licenses/projects"'),
+            new Step\When('I press "Approve Project"'),
+        );
     }
 
     /**

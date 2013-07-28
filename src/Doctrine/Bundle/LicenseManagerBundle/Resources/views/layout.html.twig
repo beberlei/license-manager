@@ -35,8 +35,24 @@
 
 <div class="container">
     {% if app.session.flashbag.has('notice') %}
-        <div class="alert alert-success">
+        <div class="alert alert-info">
             {% for item in app.session.flashbag.get('notice') %}
+                {{ item }}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if app.session.flashbag.has('success') %}
+        <div class="alert alert-success">
+            {% for item in app.session.flashbag.get('success') %}
+                {{ item }}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if app.session.flashbag.has('warning') %}
+        <div class="alert alert-warning">
+            {% for item in app.session.flashbag.get('warning') %}
                 {{ item }}
             {% endfor %}
         </div>

@@ -126,9 +126,12 @@ class AuthorController extends Controller
     {
         $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
         $author = $entityManager->find('Doctrine\Bundle\LicenseManagerBundle\Entity\Author', $id);
+
         if (!$author) {
             throw $this->createNotFoundException();
         }
+
+        $project = $author->getProject();
 
         $hash = $this->getRequest()->query->get('hash', '');
         $expected = sha1($this->container->getParameter('secret') . $id . $author->getEmail());
@@ -149,7 +152,7 @@ class AuthorController extends Controller
             }
         }
 
-        return array('form' => $form->createView(), 'author' => $author, 'expectedHash' => $expected);
+        return array('form' => $form->createView(), 'author' => $author, 'expectedHash' => $expected, 'project' => $project);
     }
 }
 

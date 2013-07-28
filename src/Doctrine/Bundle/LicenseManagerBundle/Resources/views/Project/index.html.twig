@@ -14,12 +14,20 @@
         <td><a href="{{ path('licenses_authors', {'project': data.project.id} ) }}">{{ data.project.name }}</a></td>
         <td><span data-name="{{ data.project.name }}" class="app-approve">{{ data.ratio }}</span>%</td>
         <td>{{ data.ratio_trivial }}%</td>
+        {% if app.security.isGranted('ROLE_ADMIN') %}
+        <td>
+            {% if data.project.confirmed() %}
+            <a class="btn btn-success" href="{{ path('licenses_project_request', {'id': data.project.id}) }}">Send Mails</a>
+            {% else %}
+            <form method="post" action="{{ path('licenses_project_approve', {'id': data.project.id}) }}">
+                <button class="btn btn-primary" href="#">Approve Project</button>
+            </form>
+            {% endif %}
+        </td>
+        {% endif %}
     </tr>
 {% endfor %}
 </table>
 
-{% if app.security.isGranted('ROLE_ADMIN') %}
-<a class="btn btn-success" href="{{ path('licenses_project_request') }}">Send Mails</a>
-{% endif %}
 
 {% endblock %}

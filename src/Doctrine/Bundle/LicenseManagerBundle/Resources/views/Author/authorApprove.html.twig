@@ -1,5 +1,19 @@
 {% extends "DoctrineLicenseManagerBundle::layout.html.twig" %}
 
 {% block content %}
-    {{ include(template_from_string(long_text)) }}
+    <p>You are visiting the License Switch Project. Please read this message from the "<strong>{{ project.name }}</strong>" maintainer(s):</p>
+
+    <blockquote>{{ project.pageMessage }}</blockquote>
+
+    <p>Do you approve that the code you contributed to the project "<strong>{{ project.name }}</strong>" changes the license?</p>
+
+    <form method="post" action="{{ path('author_approve', {'id': author.id, 'hash': expectedHash}) }}" class="form-inline">
+        {{ form_errors(form.approved) }}
+        {{ form_widget(form.approved) }}
+        {{ form_rest(form) }}
+
+        <input type="submit" value="Save Answer" class="btn btn-primary" />
+    </form>
+
+    <p>Before you make your decision you can <a href="{{ path('licenses_author_view', {'id': author.id}) }}" target="_blank">review all the commits you made</a>.</p>
 {% endblock %}

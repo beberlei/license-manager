@@ -1,1 +1,13 @@
-{{ include(template_from_string(email_text)) }}
+Hello Contributor to {{ project.name }}!
+
+You are getting this mail, because {{ project.name }} wants to switch its
+open-source license using the License Switcher project.
+
+Please visit the following link where you can enter your answer:
+
+{{ link }}
+
+Message of the project maintainer(s):
+
+{{ project.emailMessage }}
+

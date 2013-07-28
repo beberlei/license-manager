@@ -22,11 +22,6 @@ framework:
 twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
-    globals:
-        short_title: %short_title%
-        long_title: %long_title%
-        long_text: %long_text%
-        email_text: %email_text%
 
 # Assetic Configuration
 assetic:

@@ -23,13 +23,19 @@ class Author
     /** @ORM\Column(type="integer") */
     protected $approved = self::STATUS_NONE;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Project")
+     */
+    protected $project;
+
     /** @ORM\OneToMany(targetEntity="Commit", mappedBy="author") */
     protected $commits;
 
-    public function __construct($username, $email)
+    public function __construct($username, $email, Project $project)
     {
         $this->username = $username;
         $this->email    = $email;
+        $this->project  = $project;
     }
 
     public function hasRealEmail()
@@ -100,6 +106,11 @@ class Author
     public function getCommits()
     {
         return $this->commits;
+    }
+
+    public function getProject()
+    {
+        return $this->project;
     }
 }
 

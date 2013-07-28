@@ -15,4 +15,14 @@ class CreateProject
      * @Assert\Url
      */
     public $githubUrl;
+
+    /**
+     * @Assert\NotBlank
+     */
+    public $pageMessage;
+
+    /**
+     * @Assert\NotBlank
+     */
+    public $emailMessage;
 }

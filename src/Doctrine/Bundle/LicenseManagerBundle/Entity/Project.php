@@ -18,6 +18,14 @@ class Project
     /** @ORM\Column(type="boolean") */
     protected $confirmed = false;
 
+    /** @ORM\Column(type="text") */
+    protected $emailMessage;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    protected $pageMessage;
+
     public function __construct($name, $url)
     {
         $this->name      = $name;
@@ -85,6 +93,29 @@ class Project
     public function setGithubUrl($githubUrl)
     {
         $this->githubUrl = $githubUrl;
+    }
+
+    public function setEmailMessage($text)
+    {
+        $this->emailMessage = $text;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmailMessage()
+    {
+        return $this->emailMessage;
+    }
+
+    public function getPageMessage()
+    {
+        return $this->pageMessage;
+    }
+
+    public function setPageMessage($pageMessage)
+    {
+        $this->pageMessage = $pageMessage;
     }
 }
 
