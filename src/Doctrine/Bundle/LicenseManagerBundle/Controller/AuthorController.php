@@ -60,6 +60,8 @@ class AuthorController extends Controller
       */
     public function updateAction($id)
     {
+        $this->assertIsRole('ROLE_ADMIN');
+
         $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
         $email = $this->getRequest()->request->get('email');
 
@@ -153,6 +155,13 @@ class AuthorController extends Controller
         }
 
         return array('form' => $form->createView(), 'author' => $author, 'expectedHash' => $expected, 'project' => $project);
+    }
+
+    private function assertIsRole($role)
+    {
+        if (!$this->container->get('security.context')->isGranted($role)) {
+            throw new AccessDeniedHttpException();
+        }
     }
 }
 

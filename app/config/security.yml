@@ -24,10 +24,3 @@ security:
                 login_path: /login
             logout: ~
             anonymous: ~
-
-    access_control:
-        - { path: ^/licenses/author/approve, roles: ROLE_USER }
-        - { path: ^/licenses/author/update, roles: ROLE_USER }
-        - { path: ^/licenses/project/send, roles: ROLE_ADMIN }
-        - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-

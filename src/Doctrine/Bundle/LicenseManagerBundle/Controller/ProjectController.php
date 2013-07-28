@@ -58,6 +58,8 @@ class ProjectController extends Controller
      */
     public function approveAction($id)
     {
+        $this->assertIsRole('ROLE_ADMIN');
+
         $em = $this->container->get('doctrine.orm.default_entity_manager');
 
         $project = $em->find('Doctrine\Bundle\LicenseManagerBundle\Entity\Project', $id);
@@ -111,6 +113,8 @@ class ProjectController extends Controller
      */
     public function requestAction($id, Request $request)
     {
+        $this->assertIsRole('ROLE_ADMIN');
+
         $em = $this->container->get('doctrine.orm.default_entity_manager');
 
         $project = $em->find('Doctrine\Bundle\LicenseManagerBundle\Entity\Project', $id);
@@ -143,6 +147,8 @@ class ProjectController extends Controller
      */
     public function sendAction($id)
     {
+        $this->assertIsRole('ROLE_ADMIN');
+
         $em = $this->container->get('doctrine.orm.default_entity_manager');
 
         $project = $em->find('Doctrine\Bundle\LicenseManagerBundle\Entity\Project', $id);
@@ -198,6 +204,13 @@ class ProjectController extends Controller
         }
 
         return $this->redirect($this->generateUrl('licenses_projects'));
+    }
+
+    private function assertIsRole($role)
+    {
+        if (!$this->container->get('security.context')->isGranted($role)) {
+            throw new AccessDeniedHttpException();
+        }
     }
 }
 
