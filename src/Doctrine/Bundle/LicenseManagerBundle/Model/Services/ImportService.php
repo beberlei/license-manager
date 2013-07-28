@@ -1,5 +1,5 @@
 <?php
-namespace Doctrine\Bundle\LicenseManagerBundle\Services;
+namespace Doctrine\Bundle\LicenseManagerBundle\Model\Services;
 
 use Doctrine\Bundle\LicenseManagerBundle\Entity\Commit;
 use Doctrine\Bundle\LicenseManagerBundle\Entity\Author;
