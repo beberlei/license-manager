@@ -1,4 +1,4 @@
-# Doctrine License Manager
+# License Manager
 
 A Symfony2 application that helps you switch the license for a Github project.
 
@@ -26,8 +26,3 @@ Run "composer create-project doctrine/license-manager --stability=dev" and
 adjust the suggested parameter values as needed when prompted.
 
 Using ruby-fpm and ant you can generate a debian package of this application.
-
-Usage
------
-
-To import a repository run "app/console license:import [url to repository]"
