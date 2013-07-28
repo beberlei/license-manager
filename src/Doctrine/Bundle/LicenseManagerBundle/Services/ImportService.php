@@ -33,6 +33,8 @@ class ImportService
         $name = substr(str_replace("https://github.com/", "", $url), 0, -4);
 
         $project = new Project($name, $url);
+        $project->markConfirmed();
+
         $this->em->persist($project);
         $dirName = str_replace("/", "-", $name);
 

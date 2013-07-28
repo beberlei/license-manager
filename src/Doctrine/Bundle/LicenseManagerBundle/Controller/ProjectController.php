@@ -17,12 +17,13 @@ class ProjectController extends Controller
     public function indexAction()
     {
         $em = $this->container->get('doctrine.orm.default_entity_manager');
-        $dql = "SELECT p AS project, " .
-               " (SELECT SUM(c.insertions) FROM Doctrine\Bundle\LicenseManagerBundle\Entity\Commit c WHERE c.project = p.id) as insertions, " .
-               " (SELECT SUM(c2.insertions) FROM Doctrine\Bundle\LicenseManagerBundle\Entity\Commit c2 INNER JOIN c2.author a WHERE a.approved = 1 AND c2.project = p.id) as confirmed_insertions, " .
-               " (SELECT SUM(c3.insertions) FROM Doctrine\Bundle\LicenseManagerBundle\Entity\Commit c3 INNER JOIN c3.author a2 WHERE a2.approved != 1 AND c3.project = p.id AND c3.trivial = true) as trivial_insertions " .
-               "FROM Doctrine\Bundle\LicenseManagerBundle\Entity\Project p " .
-               "ORDER BY p.name ASC";
+        $dql = "SELECT p AS project,
+                    (SELECT SUM(c.insertions) FROM Doctrine\Bundle\LicenseManagerBundle\Entity\Commit c WHERE c.project = p.id) as insertions,
+                    (SELECT SUM(c2.insertions) FROM Doctrine\Bundle\LicenseManagerBundle\Entity\Commit c2 INNER JOIN c2.author a WHERE a.approved = 1 AND c2.project = p.id) as confirmed_insertions,
+                    (SELECT SUM(c3.insertions) FROM Doctrine\Bundle\LicenseManagerBundle\Entity\Commit c3 INNER JOIN c3.author a2 WHERE a2.approved != 1 AND c3.project = p.id AND c3.trivial = true) as trivial_insertions
+                 FROM Doctrine\Bundle\LicenseManagerBundle\Entity\Project p
+                WHERE p.confirmed = true
+             ORDER BY p.name ASC";
         $projects = $em->createQuery($dql)->getResult();
 
         for ($i = 0; $i < count($projects); $i++) {

@@ -15,11 +15,18 @@ class Project
     protected $name;
     /** @ORM\Column */
     protected $githubUrl;
+    /** @ORM\Column(type="boolean") */
+    protected $confirmed = false;
 
     public function __construct($name, $url)
     {
         $this->name      = $name;
         $this->githubUrl = $url;
+    }
+
+    public function markConfirmed()
+    {
+        $this->confirmed = true;
     }
 
     /**
