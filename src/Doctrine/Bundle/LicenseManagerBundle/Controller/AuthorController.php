@@ -98,7 +98,7 @@ class AuthorController extends Controller
         $commits->setMaxPerPage(50);
         $commits->setCurrentPage($this->getRequest()->get('page', 1));
 
-        $expected = sha1($this->container->getParameter('secret') . $id . $author->getEmail());
+        $expected = hash_hmac('sha512', $id . $author->getEmail(), $this->container->getParameter('secret'));
 
         return array('author' => $author, 'revisions' => $revisions, 'commits' => $commits, 'expectedHash' => $expected);
     }
@@ -139,7 +139,8 @@ class AuthorController extends Controller
         $project = $author->getProject();
 
         $hash = $this->getRequest()->query->get('hash', '');
-        $expected = sha1($this->container->getParameter('secret') . $id . $author->getEmail());
+        $expected = hash_hmac('sha512', $id . $author->getEmail(), $this->container->getParameter('secret'));
+
         if ($expected != $hash) {
             throw $this->createNotFoundException();
         }

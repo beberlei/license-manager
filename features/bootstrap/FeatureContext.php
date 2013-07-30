@@ -126,7 +126,7 @@ class FeatureContext extends MinkContext
         $steps = array();
 
         foreach ($hash as $row) {
-            $hash = sha1($this->secret . $row['ID'] . $row['Email']);
+            $hash = hash_hmac('sha512', $row['ID'] . $row['Email'], $this->secret);
 
             $steps[] = new Step\When('I am on "/licenses/authors/' . $row['ID'] . '/approve?hash=' . $hash . '"');
             $steps[] = new Step\When('I select "I approve" from "licenses_approve[approved]"');
