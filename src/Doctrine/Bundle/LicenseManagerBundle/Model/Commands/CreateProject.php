@@ -25,4 +25,16 @@ class CreateProject
      * @Assert\NotBlank
      */
     public $emailMessage;
+
+    /**
+     * @Assert\NotBlank
+     * @Assert\Type(type="integer")
+     */
+    public $fromLicense;
+
+    /**
+     * @Assert\NotBlank
+     * @Assert\Type(type="integer")
+     */
+    public $toLicense;
 }

@@ -26,6 +26,16 @@ class Project
      */
     protected $pageMessage;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="License")
+     */
+    protected $fromLicense;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="License")
+     */
+    protected $toLicense;
+
     public function __construct($name, $url)
     {
         $this->name      = $name;
@@ -116,6 +126,36 @@ class Project
     public function setPageMessage($pageMessage)
     {
         $this->pageMessage = $pageMessage;
+    }
+
+    /**
+     * Get toLicense.
+     *
+     * @return License
+     */
+    public function getToLicense()
+    {
+        return $this->toLicense;
+    }
+
+    public function setToLicense(License $toLicense)
+    {
+        $this->toLicense = $toLicense;
+    }
+
+    /**
+     * Get fromLicense.
+     *
+     * @return License
+     */
+    public function getFromLicense()
+    {
+        return $this->fromLicense;
+    }
+
+    public function setFromLicense(License $fromLicense)
+    {
+        $this->fromLicense = $fromLicense;
     }
 }
 

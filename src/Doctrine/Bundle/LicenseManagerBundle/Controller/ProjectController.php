@@ -81,18 +81,23 @@ class ProjectController extends Controller
      */
     public function createAction(Request $request)
     {
-        $form = $this->createForm(new CreateProjectType());
+        $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
+        $licenseRepository = $entityManager->getRepository('Doctrine\Bundle\LicenseManagerBundle\Entity\License');
+        $licenses  = $licenseRepository->findBy(array(), array('name' => 'ASC'));
+
+        $form = $this->createForm(new CreateProjectType(), null, array('licenses' => $licenses));
 
         if ($request->getMethod() === 'POST') {
             $form->bind($request);
 
             if ($form->isValid()) {
                 $createProject = $form->getData();
-                $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
 
                 $project = new Project($createProject->name, $createProject->githubUrl);
                 $project->setPageMessage($createProject->pageMessage);
                 $project->setEmailMessage($createProject->emailMessage);
+                $project->setFromLicense($licenseRepository->find($createProject->fromLicense));
+                $project->setToLicense($licenseRepository->find($createProject->toLicense));
 
                 $entityManager->persist($project);
                 $entityManager->flush();

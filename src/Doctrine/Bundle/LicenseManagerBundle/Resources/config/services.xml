@@ -21,6 +21,10 @@
         <service id="doctrine_license_manager.mailer.monolog" class="Doctrine\Bundle\LicenseManagerBundle\Adapter\Monolog\LogMailer">
             <argument type="service" id="logger" />
         </service>
+
+        <service id="doctrine_license_manager.installer" class="Doctrine\Bundle\LicenseManagerBundle\Model\Services\Installer">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+        </service>
     </services>
 
 </container>
