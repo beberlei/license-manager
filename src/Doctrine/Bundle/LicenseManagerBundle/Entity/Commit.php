@@ -60,7 +60,7 @@ class Commit
     /**
      * Get id.
      *
-     * @return id.
+     * @return int id.
      */
     public function getId()
     {
@@ -70,7 +70,7 @@ class Commit
     /**
      * Get sha1.
      *
-     * @return sha1.
+     * @return string sha1.
      */
     public function getSha1()
     {
@@ -80,7 +80,7 @@ class Commit
     /**
      * Get project.
      *
-     * @return project.
+     * @return Project.
      */
     public function getProject()
     {

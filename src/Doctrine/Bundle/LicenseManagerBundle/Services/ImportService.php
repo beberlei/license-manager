@@ -32,8 +32,12 @@ class ImportService
 
         $name = substr(str_replace("https://github.com/", "", $url), 0, -4);
 
-        $project = new Project($name, $url);
-        $this->em->persist($project);
+        $update = true;
+        if (! $project = $this->em->getRepository('Doctrine\Bundle\LicenseManagerBundle\Entity\Project')->findOneByName($name)) {
+            $project = new Project($name, $url);
+            $this->em->persist($project);
+            $update = false;
+        }
         $dirName = str_replace("/", "-", $name);
 
         chdir("/tmp");
@@ -49,6 +53,19 @@ class ImportService
             $authors[$author->getEmail()] = $author;
         }
 
+        $commits = array();
+        if ($update) {
+            $dql = "SELECT c FROM Doctrine\Bundle\LicenseManagerBundle\Entity\Commit c
+                    WHERE c.project = :id
+            ";
+            $query = $this->em->createQuery($dql);
+            $query->setParameter('id', $project->getId());
+            /** @var $commit Commit */
+            foreach ($query->getResult() as $commit) {
+                $commits[$commit->getSha1()] = $commit;
+            }
+        }
+
         $sha1 = $name = $email = $subject = $changeLine = $time = null;
         foreach ($lines as $line) {
 
@@ -59,7 +76,7 @@ class ImportService
                         $this->em->persist($authors[$email]);
                     }
 
-                    if ( $changeLine) {
+                    if ( $changeLine && ! isset($commits[$sha1])) {
                         $commit = new Commit($sha1, $project, $authors[$email], $changeLine, new \DateTime('@' . $time));
                         $this->em->persist($commit);
                         $changeLine = null;

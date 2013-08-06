@@ -31,3 +31,8 @@ Usage
 -----
 
 To import a repository run "app/console license:import [url to repository]"
+
+You can simply re-run the license:import command to update an existing
+repository, in case the relicensing process took too long and you got new
+contributors. The approval is per author, so only new authors that did not
+approve yet will be listed as not approved.
