@@ -5,7 +5,11 @@
 
     <blockquote>{{ project.pageMessage }}</blockquote>
 
-    <p>Do you approve that the code you contributed to the project "<strong>{{ project.name }}</strong>" changes the license?</p>
+    <p>
+        Do you approve that the code you contributed to the project "<strong>{{ project.name }}</strong>" changes the license
+        from current <a href="{{ project.fromLicense.url }}" target="_blank">{{ project.fromLicense.name }}</a> to
+        new license <a href="{{ project.toLicense.url }}" target="_blank">{{ project.toLicense.name }}?</a>
+    </p>
 
     <form method="post" action="{{ path('author_approve', {'id': author.id, 'hash': expectedHash}) }}" class="form-inline">
         {{ form_errors(form.approved) }}

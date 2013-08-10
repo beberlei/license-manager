@@ -3,9 +3,11 @@
 {% block content %}
 {{ parent() }}
 
-<h1>Authors</h1>
+<h1>{{ project.name }}</h1>
 
-    <p>{{ authors|length }} Authors with approve ratio: <span class="app-approve">{{ approveRatio }}</span>%. Still {{ missing }} authors missing.</p>
+<p>Project wants to change the license from <a href="{{ project.fromLicense.url }}" target="_blank">{{ project.fromLicense.name }}</a> to <a href="{{ project.toLicense.url }}" target="_blank">{{ project.toLicense.name }}</a>.</p>
+
+<p>{{ authors|length }} Authors with approve ratio: <span class="app-approve">{{ approveRatio }}</span>%. Still {{ missing }} authors missing.</p>
 
     <table class="table table-bordered">
         <tr>
