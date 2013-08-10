@@ -16,7 +16,7 @@ Feature: Switch License Project
 
     Scenario: E-Mail visible for admin
         When I am logged in as admin
-        And I am on "/licenses/authors"
+        And I am on "/licenses/projects/1"
         Then I should see a field with "kontakt@beberlei.de"
 
     Scenario: Approve button not visible for non-admins

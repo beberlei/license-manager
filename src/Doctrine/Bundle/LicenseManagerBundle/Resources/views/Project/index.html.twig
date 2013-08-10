@@ -6,14 +6,14 @@
 <table class="table table-bordered">
     <tr>
         <th>Name</th>
-        <th>Confirmed Insertions %</th>
-        <th>Trival/Removed Code %</th>
+        <th>License</th>
+        <th>Confirmed %</th>
     </tr>
 {% for data in projects %}
     <tr>
-        <td><a href="{{ path('licenses_authors', {'project': data.project.id} ) }}">{{ data.project.name }}</a></td>
+        <td><a href="{{ path('licenses_project_view', {'id': data.project.id} ) }}">{{ data.project.name }}</a></td>
+        <td><a href="{{ data.project.fromLicense.url }}" target="_blank">{{ data.project.fromLicense.name }}</td>
         <td><span data-name="{{ data.project.name }}" class="app-approve">{{ data.ratio }}</span>%</td>
-        <td>{{ data.ratio_trivial }}%</td>
         {% if app.security.isGranted('ROLE_ADMIN') %}
         <td>
             {% if data.project.confirmed() %}

@@ -11,7 +11,7 @@
         <tr>
             <th>Username</th>
             <th>E-Mail</th>
-            <th><a href="{{ path('licenses_authors', {'unapproved': 1}) }}">Approved</a></th>
+            <th><a href="{{ path('licenses_project_view', {'id': project.id, 'unapproved': 1}) }}">Approved</a></th>
             <th>Insertions</th>
             <th>Deletions</th>
         </tr>

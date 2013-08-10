@@ -52,6 +52,45 @@ class ProjectController extends Controller
     }
 
     /**
+     * @Extra\Route("licenses/projects/{id}", name="licenses_project_view", requirements={"id": "\d+"})
+     * @Extra\Template
+     */
+    public function viewAction($id)
+    {
+        $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
+        $project = $entityManager->find('Doctrine\Bundle\LicenseManagerBundle\Entity\Project', $id);
+
+        $qb = $entityManager->createQueryBuilder();
+        $qb->from('Doctrine\Bundle\LicenseManagerBundle\Entity\Author', 'a')
+           ->select('a AS author, SUM(c.insertions) AS insertions, SUM(c.deletions) AS deletions')
+           ->innerJoin('a.commits', 'c')
+           ->where('c.project = ?1')->setParameter(1, $id)
+           ->groupBy('a.id')
+           ->orderBy('insertions', 'DESC');
+
+        if ($this->getRequest()->query->has('unapproved')) {
+            $qb->andWhere('a.approved = false');
+        }
+
+        $authors = $qb->getQuery()->getResult();
+
+        $approvedCount = 0;
+        foreach ($authors as $data) {
+            if ($data['author']->getApproved() == 1) {
+                $approvedCount++;
+            }
+        }
+        $missing = count($authors) - $approvedCount;
+
+        return array(
+            'project' => $project,
+            'authors' => $authors,
+            'missing' => $missing,
+            'approveRatio' => count($authors) ? number_format($approvedCount / count($authors) * 100, 2) : 0,
+        );
+    }
+
+    /**
      * @Extra\Route("/licenses/projects/{id}/approve", name="licenses_project_approve")
      * @Extra\Method("POST")
      * @Extra\Template

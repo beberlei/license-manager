@@ -13,48 +13,6 @@ use Pagerfanta\Pagerfanta;
  */
 class AuthorController extends Controller
 {
-    /**
-     * @Extra\Route("/licenses/authors", name="licenses_authors")
-     * @Extra\Method("GET")
-     * @Extra\Template
-     */
-    public function manageAction()
-    {
-        $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
-
-        $qb = $entityManager->createQueryBuilder();
-        $qb->from('Doctrine\Bundle\LicenseManagerBundle\Entity\Author', 'a')
-           ->select('a AS author, SUM(c.insertions) AS insertions, SUM(c.deletions) AS deletions')
-           ->innerJoin('a.commits', 'c')
-           ->groupBy('a.id')
-           ->orderBy('insertions', 'DESC');
-
-        if ($this->getRequest()->query->has('project')) {
-            $qb->andWhere('c.project = ?1')
-               ->setParameter(1, $this->getRequest()->query->get('project'));
-        }
-
-        if ($this->getRequest()->query->has('unapproved')) {
-            $qb->andWhere('a.approved = false');
-        }
-
-        $authors = $qb->getQuery()->getResult();
-
-        $approvedCount = 0;
-        foreach ($authors as $data) {
-            if ($data['author']->getApproved() == 1) {
-                $approvedCount++;
-            }
-        }
-        $missing = count($authors) - $approvedCount;
-
-        return array(
-            'authors' => $authors,
-            'missing' => $missing,
-            'approveRatio' => count($authors) ? number_format($approvedCount / count($authors) * 100, 2) : 0,
-        );
-    }
-
      /**
       * @Extra\Route("/licenses/authors/{id}/update", name="licenses_authors_update")
       * @Extra\Method("POST")
@@ -75,7 +33,7 @@ class AuthorController extends Controller
             return new Response('{"ok":true}', 200, array('Content-Type' => 'application/json'));
         }
 
-        return $this->redirect($this->generateUrl('licenses_authors'));
+        return $this->redirect($this->generateUrl('licenses_project_view', array('id' => $author->getProject()->getId())));
     }
 
     /**
@@ -119,7 +77,7 @@ class AuthorController extends Controller
 
         $this->container->get('session')->setFlash('notice', 'Author ' . $author->getEmail() . ' was approved.');
 
-        return $this->redirect($this->generateUrl('licenses_authors'));
+        return $this->redirect($this->generateUrl('licenses_project_view', array('id' => $author->getProject()->getId())));
     }
 
     /**
