@@ -5,9 +5,19 @@
 
 <h1>{{ project.name }}</h1>
 
-<p>Project wants to change the license from <a href="{{ project.fromLicense.url }}" target="_blank">{{ project.fromLicense.name }}</a> to <a href="{{ project.toLicense.url }}" target="_blank">{{ project.toLicense.name }}</a>.</p>
+    <p>Project wants to change the license from <a href="{{ project.fromLicense.url }}" target="_blank">{{ project.fromLicense.name }}</a> to <a href="{{ project.toLicense.url }}" target="_blank">{{ project.toLicense.name }}</a>.</p>
 
-<p>{{ authors|length }} Authors with approve ratio: <span class="app-approve">{{ approveRatio }}</span>%. Still {{ missing }} authors missing.</p>
+    <p>{{ authors|length }} Authors with approve ratio: <span class="app-approve">{{ approveRatio }}</span>%. Still {{ missing }} authors missing.</p>
+
+    <h3>Repositories</h3>
+
+    <ul>
+        {% for repository in project.repositories %}
+            <li>{{ repository.url }}</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Authors</h3>
 
     <table class="table table-bordered">
         <tr>
