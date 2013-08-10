@@ -1,7 +1,10 @@
 <?php
 namespace Doctrine\Bundle\LicenseManagerBundle\Tests;
 
+use Doctrine\Bundle\LicenseManagerBundle\Entity\Author;
 use Doctrine\Bundle\LicenseManagerBundle\Entity\Commit;
+use Doctrine\Bundle\LicenseManagerBundle\Entity\Project;
+use Doctrine\Bundle\LicenseManagerBundle\Entity\Repository;
 
 class CommitTest extends \PHPUnit_Framework_TestCase
 {
@@ -14,7 +17,11 @@ class CommitTest extends \PHPUnit_Framework_TestCase
      */
     public function testParseChangeLine($changeLine, $files, $insertions, $deletions)
     {
-        $commit = new Commit("abcdefg", null, null, " 3 files changed, 6 insertions(+), 5 deletions(-)");
+        $project = new Project('Foo');
+        $repository = new Repository($project, 'foo');
+        $author = new Author('bar', 'bar', $project);
+
+        $commit = new Commit("abcdefg", $project, $repository, $author, " 3 files changed, 6 insertions(+), 5 deletions(-)");
 
         $this->assertEquals(3, $commit->getFilesChanged());
         $this->assertEquals(6, $commit->getInsertions());
