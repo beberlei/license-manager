@@ -148,8 +148,13 @@ class ProjectController extends Controller
                     $this->container->getParameter('mailer_admin_email'),
                     'New License Switch Project registered',
                     sprintf(
-                        "Hello!\n\nA new project was registered on License Switcher:\n\nName: %s\nURL: %s\nPage Message:\n\n%s\n\nE-Mail Message:\n\n%s",
-                        $createProject->name, $createProject->githubUrl, $createProject->pageMessage, $createProject->emailMessage
+                        "Hello!\n\nA new project was registered on License Switcher:\n\nName: %s\nURL: %s\nFrom %s To %s\nPage Message:\n\n%s\n\nE-Mail Message:\n\n%s",
+                        $createProject->name,
+                        $createProject->githubUrl,
+                        $project->getFromLicense()->getName(),
+                        $project->getToLicense()->getName(),
+                        $createProject->pageMessage,
+                        $createProject->emailMessage
                     )
                 );
 
