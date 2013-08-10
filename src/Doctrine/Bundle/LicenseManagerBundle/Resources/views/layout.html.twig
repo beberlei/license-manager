@@ -140,6 +140,22 @@
          $("#commitDetails").find('.modal-close').click(function() {
          $("#commitDetails").modal('hide');
          });*/
+
+         jQuery('#create_project_url').append('<a href="#" id="add-url">Add Url</a>');
+         jQuery('#add-url').click(function() {
+             var urlList = jQuery('#create_project_url');
+
+             // grab the prototype template
+             var newWidget = urlList.attr('data-prototype');
+             // replace the "__name__" used in the id and name of the prototype
+             // with a number that's unique to your emails
+             // end name attribute looks like name="contact[emails][2]"
+             cnt = urlList.find('input').length;
+             newWidget = newWidget.replace(/__name__/g, cnt);
+             $(newWidget).appendTo(jQuery('#create_project_url'));
+
+             return false;
+         });
     });
     -->
 </script>

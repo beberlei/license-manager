@@ -1,5 +1,11 @@
 {% block form_row %}
 {% spaceless %}
+    {% if form.parent.vars.name == 'url' %}
+    <div class="url">
+        {{ form_widget(form) }}
+        {{ form_errors(form) }}
+    </div>
+    {% else %}
     <div class="control-group {{ errors|length > 0 ? 'error' : '' }}">
         {{ form_label(form) }}
         <div class="controls">
@@ -7,6 +13,7 @@
             {{ form_errors(form) }}
         </div>
     </div>
+    {% endif %}
 {% endspaceless %}
 {% endblock form_row %}
 

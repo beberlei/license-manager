@@ -11,10 +11,12 @@ class CreateProject
      */
     public $name;
     /**
-     * @Assert\NotBlank
-     * @Assert\Url
+     * @Assert\All({
+     *     @Assert\NotBlank(),
+     *     @Assert\Url()
+     * })
      */
-    public $githubUrl;
+    public $url = array("");
 
     /**
      * @Assert\NotBlank

@@ -17,7 +17,7 @@ class CreateProjectType extends AbstractType
 
         $builder
             ->add('name', 'text', array('label' => 'Project Name'))
-            ->add('githubUrl', 'url', array('label' => 'Github Repository URL'))
+            ->add('url', 'collection', array('type' => 'text', 'allow_add' => true, 'label' => 'Github Repository URL'))
             ->add('pageMessage', 'textarea', array('label' => 'Message on Approval Page', 'attr' => array('class' => 'span5', 'rows' => 6)))
             ->add('emailMessage', 'textarea', array('label' => 'Message in Mail to Contributor', 'attr' => array('class' => 'span5', 'rows' => 6)))
             ->add('fromLicense', 'choice', array('choices' => $licenseOptions, 'label' => 'From License'))

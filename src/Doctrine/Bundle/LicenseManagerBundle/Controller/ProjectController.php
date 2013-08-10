@@ -5,6 +5,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration as Extra;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
+use Doctrine\Bundle\LicenseManagerBundle\Model\Commands\CreateProject;
 use Doctrine\Bundle\LicenseManagerBundle\Form\CreateProjectType;
 use Doctrine\Bundle\LicenseManagerBundle\Entity\Project;
 
@@ -124,7 +125,8 @@ class ProjectController extends Controller
         $licenseRepository = $entityManager->getRepository('Doctrine\Bundle\LicenseManagerBundle\Entity\License');
         $licenses  = $licenseRepository->findBy(array(), array('name' => 'ASC'));
 
-        $form = $this->createForm(new CreateProjectType(), null, array('licenses' => $licenses));
+        $command = new CreateProject();
+        $form = $this->createForm(new CreateProjectType(), $command, array('licenses' => $licenses));
 
         if ($request->getMethod() === 'POST') {
             $form->bind($request);
@@ -133,7 +135,9 @@ class ProjectController extends Controller
                 $createProject = $form->getData();
 
                 $project = new Project($createProject->name);
-                $project->addRepository($createProject->githubUrl);
+                foreach ($createProject->url as $url) {
+                    $project->addRepository($url);
+                }
                 $project->setPageMessage($createProject->pageMessage);
                 $project->setEmailMessage($createProject->emailMessage);
                 $project->setFromLicense($licenseRepository->find($createProject->fromLicense));
@@ -151,7 +155,7 @@ class ProjectController extends Controller
                     sprintf(
                         "Hello!\n\nA new project was registered on License Switcher:\n\nName: %s\nURL: %s\nFrom %s To %s\nPage Message:\n\n%s\n\nE-Mail Message:\n\n%s",
                         $createProject->name,
-                        $createProject->githubUrl,
+                        implode(", ", $createProject->url),
                         $project->getFromLicense()->getName(),
                         $project->getToLicense()->getName(),
                         $createProject->pageMessage,

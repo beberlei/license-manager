@@ -107,7 +107,7 @@ class FeatureContext extends MinkContext
         return array(
             new Step\Given('I am on "/licenses/projects/create"'),
             new Step\When('I fill in "create_project[name]" with "' . $name . '"'),
-            new Step\When('I fill in "create_project[githubUrl]" with "' . $repositoryUrl . '"'),
+            new Step\When('I fill in "create_project[url][0]" with "' . $repositoryUrl . '"'),
             new Step\When('I fill in "create_project[pageMessage]" with "Page Message"'),
             new Step\When('I fill in "create_project[emailMessage]" with "Mail Message"'),
             new Step\When('I press "Create Project"'),
