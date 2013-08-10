@@ -110,6 +110,8 @@ class FeatureContext extends MinkContext
             new Step\When('I fill in "create_project[url][0]" with "' . $repositoryUrl . '"'),
             new Step\When('I fill in "create_project[pageMessage]" with "Page Message"'),
             new Step\When('I fill in "create_project[emailMessage]" with "Mail Message"'),
+            new Step\When('I fill in "create_project[senderName]" with "foo"'),
+            new Step\When('I fill in "create_project[senderMail]" with "foo@qafoo.com"'),
             new Step\When('I press "Create Project"'),
             new Step\Given('I am logged in as admin'),
             new Step\Given('I am on "/licenses/projects"'),

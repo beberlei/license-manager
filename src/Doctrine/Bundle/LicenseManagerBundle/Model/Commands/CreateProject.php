@@ -30,6 +30,17 @@ class CreateProject
 
     /**
      * @Assert\NotBlank
+     */
+    public $senderName;
+
+    /**
+     * @Assert\NotBlank
+     * @Assert\Email
+     */
+    public $senderMail;
+
+    /**
+     * @Assert\NotBlank
      * @Assert\Type(type="integer")
      */
     public $fromLicense;

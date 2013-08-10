@@ -40,6 +40,16 @@ class Project
      */
     protected $repositories;
 
+    /**
+     * @ORM\Column(type="text")
+     */
+    protected $senderName;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    protected $senderMail;
+
     public function __construct($name)
     {
         $this->name      = $name;
@@ -150,6 +160,22 @@ class Project
     public function getRepositories()
     {
         return array_values($this->repositories->toArray());
+    }
+
+    public function setSender($name, $email)
+    {
+        $this->senderName = $name;
+        $this->senderMail = $email;
+    }
+
+    public function getSenderName()
+    {
+        return $this->senderName;
+    }
+
+    public function getSenderMail()
+    {
+        return $this->senderMail;
     }
 }
 

@@ -20,6 +20,8 @@ class CreateProjectType extends AbstractType
             ->add('url', 'collection', array('type' => 'text', 'allow_add' => true, 'label' => 'Github Repository URL'))
             ->add('pageMessage', 'textarea', array('label' => 'Message on Approval Page', 'attr' => array('class' => 'span5', 'rows' => 6)))
             ->add('emailMessage', 'textarea', array('label' => 'Message in Mail to Contributor', 'attr' => array('class' => 'span5', 'rows' => 6)))
+            ->add('senderName', 'text', array('label' => 'Sender Name'))
+            ->add('senderMail', 'email', array('label' => 'Sender e-Mail'))
             ->add('fromLicense', 'choice', array('choices' => $licenseOptions, 'label' => 'From License'))
             ->add('toLicense', 'choice', array('choices' => $licenseOptions, 'label' => 'To License'))
         ;

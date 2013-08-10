@@ -140,6 +140,7 @@ class ProjectController extends Controller
                 }
                 $project->setPageMessage($createProject->pageMessage);
                 $project->setEmailMessage($createProject->emailMessage);
+                $project->setSender($createProject->senderName, $createProject->senderMail);
                 $project->setFromLicense($licenseRepository->find($createProject->fromLicense));
                 $project->setToLicense($licenseRepository->find($createProject->toLicense));
 
@@ -251,7 +252,8 @@ class ProjectController extends Controller
             ), true);
 
             $mailer->sendTextMessage(
-                'Benjamin Eberlei <kontakt@beberlei.de>', $author->getEmail(),
+                sprintf('%s <%s>', $project->getSenderName(), $project->getSenderMail()),
+                $author->getEmail(),
                 sprintf('Your answer needed: %s License Change', $project->getName()),
                 $this->renderView('DoctrineLicenseManagerBundle:Project:email.txt.twig', array(
                     'project' => $project,
