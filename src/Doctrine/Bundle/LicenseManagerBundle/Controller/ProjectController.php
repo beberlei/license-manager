@@ -132,7 +132,8 @@ class ProjectController extends Controller
             if ($form->isValid()) {
                 $createProject = $form->getData();
 
-                $project = new Project($createProject->name, $createProject->githubUrl);
+                $project = new Project($createProject->name);
+                $project->addRepository($createProject->githubUrl);
                 $project->setPageMessage($createProject->pageMessage);
                 $project->setEmailMessage($createProject->emailMessage);
                 $project->setFromLicense($licenseRepository->find($createProject->fromLicense));

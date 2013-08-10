@@ -15,6 +15,8 @@ class Commit
     protected $sha1;
     /** @ORM\ManyToOne(targetEntity="Project") */
     protected $project;
+    /** @ORM\ManyToOne(targetEntity="Repository") */
+    protected $repository;
     /** @ORM\ManyToOne(targetEntity="Author", inversedBy="commits") */
     protected $author;
 
@@ -31,10 +33,11 @@ class Commit
     /** @ORM\Column(type="integer") */
     protected $deletions;
 
-    public function __construct($sha1, Project $project = null, Author $author = null, $changeLine = null, \DateTime $created = null)
+    public function __construct($sha1, Project $project, Repository $repository, Author $author = null, $changeLine = null, \DateTime $created = null)
     {
         $this->sha1    = $sha1;
         $this->project = $project;
+        $this->repository = $repository;
         $this->author  = $author;
         $this->created = $created;
 

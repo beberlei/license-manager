@@ -44,7 +44,7 @@ class FeatureContext extends MinkContext
         $parameters = $event->getContextParameters();
         $conn = DriverManager::getConnection($parameters['db']);
 
-        $tables = array('commit_audit', 'commit', 'author_audit', 'author', 'project', 'revisions');
+        $tables = array('repository', 'commit_audit', 'commit', 'author_audit', 'author', 'project', 'revisions');
 
         $conn->exec('SET foreign_key_checks = 0;');
         foreach ($tables as $table) {

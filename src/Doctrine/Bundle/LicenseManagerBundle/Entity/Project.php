@@ -2,6 +2,7 @@
 namespace Doctrine\Bundle\LicenseManagerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity
@@ -13,8 +14,6 @@ class Project
     protected $id;
     /** @ORM\Column */
     protected $name;
-    /** @ORM\Column(unique=true) */
-    protected $githubUrl;
     /** @ORM\Column(type="boolean") */
     protected $confirmed = false;
 
@@ -36,10 +35,15 @@ class Project
      */
     protected $toLicense;
 
-    public function __construct($name, $url)
+    /**
+     * @ORM\OneToMany(targetEntity="Repository", mappedBy="project", indexBy="url", cascade={"persist", "remove"})
+     */
+    protected $repositories;
+
+    public function __construct($name)
     {
         $this->name      = $name;
-        $this->githubUrl = $url;
+        $this->repositories = new ArrayCollection();
     }
 
     public function markConfirmed()
@@ -83,26 +87,6 @@ class Project
     public function setName($name)
     {
         $this->name = $name;
-    }
-
-    /**
-     * Get githubUrl.
-     *
-     * @return githubUrl.
-     */
-    public function getGithubUrl()
-    {
-        return $this->githubUrl;
-    }
-
-    /**
-     * Set githubUrl.
-     *
-     * @param githubUrl the value to set.
-     */
-    public function setGithubUrl($githubUrl)
-    {
-        $this->githubUrl = $githubUrl;
     }
 
     public function setEmailMessage($text)
@@ -156,6 +140,16 @@ class Project
     public function setFromLicense(License $fromLicense)
     {
         $this->fromLicense = $fromLicense;
+    }
+
+    public function addRepository($url)
+    {
+        $this->repositories[$url] = new Repository($this, $url);
+    }
+
+    public function getRepositories()
+    {
+        return array_values($this->repositories->toArray());
     }
 }
 
