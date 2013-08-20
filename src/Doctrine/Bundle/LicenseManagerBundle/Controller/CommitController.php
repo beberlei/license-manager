@@ -18,6 +18,8 @@ class CommitController extends Controller
      */
     public function trivialAction($id)
     {
+        $this->assertIsRole('ROLE_ADMIN');
+
         $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
         $commit        = $entityManager->find('Doctrine\Bundle\LicenseManagerBundle\Entity\Commit', $id);
         $commit->markTrivial();
@@ -25,5 +27,12 @@ class CommitController extends Controller
         $entityManager->flush();
 
         return $this->redirect($this->generateUrl('licenses_author_view', array('id' => $commit->getAuthor()->getId())));
+    }
+
+    private function assertIsRole($role)
+    {
+        if (!$this->container->get('security.context')->isGranted($role)) {
+            throw new AccessDeniedHttpException();
+        }
     }
 }
