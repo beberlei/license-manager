@@ -231,21 +231,16 @@ class ProjectController extends Controller
         $authors = $qb->getQuery()->setParameter(1, $id)->getResult();
 
         $mailer = $this->container->get('doctrine_license_manager.mailer');
-        $emails = array();
 
         foreach ($authors as $author) {
-            if (isset($emails[$author->getEmail()])) {
-                continue;
-            }
-
-            $emails[$author->getEmail()] = true;
 
             $parts = explode("@", $author->getEmail());
             if (strpos($parts[1], ".") === false) {
                 continue;
             }
 
-            $expected = sha1($this->container->getParameter('secret') . $author->getId() . $author->getEmail());
+            $expected = hash_hmac('sha512', $author->getId() . $author->getEmail(), $this->container->getParameter('secret'));
+
             $link = $this->generateUrl('author_approve', array(
                 'id' => $author->getId(),
                 'hash' => $expected,
