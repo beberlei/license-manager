@@ -4,6 +4,10 @@ namespace Doctrine\Bundle\LicenseManagerBundle\Adapter\Doctrine;
 
 use Doctrine\ORM\EntityManager;
 
+use Doctrine\Bundle\LicenseManagerBundle\Entity\AuthorNotFoundException;
+use Doctrine\Bundle\LicenseManagerBundle\Entity\AuthorRepository;
+use Doctrine\Bundle\LicenseManagerBundle\Entity\Author;
+
 class AuthorOrmRepository implements AuthorRepository
 {
     /**
@@ -18,10 +22,10 @@ class AuthorOrmRepository implements AuthorRepository
 
     public function find($id)
     {
-        $author = $this->entityManager->find('Doctrine\Bundle\LicenseManager\Entity\Author', $id);
+        $author = $this->entityManager->find('Doctrine\Bundle\LicenseManagerBundle\Entity\Author', $id);
 
         if (!$author) {
-            throw new \RuntimeException();
+            throw new AuthorNotFoundException($id);
         }
 
         return $author;
@@ -30,5 +34,6 @@ class AuthorOrmRepository implements AuthorRepository
     public function add(Author $author)
     {
         $this->entityManager->persist($author);
+        $this->entityManager->persist($author->getProject());
     }
 }
