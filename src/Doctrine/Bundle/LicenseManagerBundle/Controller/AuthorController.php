@@ -29,11 +29,10 @@ class AuthorController extends Controller
 
         $entityManager->flush();
 
-        if ($this->getRequest()->isXmlHttpRequest()) {
-            return new Response('{"ok":true}', 200, array('Content-Type' => 'application/json'));
-        }
+        $navigator = $this->container->get('doctrine_license_manager.page_nagivator');
+        $navigator->setRequest($this->getRequest());
 
-        return $this->redirect($this->generateUrl('licenses_project_view', array('id' => $author->getProject()->getId())));
+        return $navigator->gotoProjectView($author->getProject()->getId());
     }
 
     /**
