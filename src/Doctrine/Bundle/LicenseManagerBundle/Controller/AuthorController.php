@@ -40,7 +40,7 @@ class AuthorController extends Controller
      * @Extra\Method("GET")
      * @Extra\Template
      */
-    public function viewAction($id)
+    public function viewAction($id, Request $request)
     {
         $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
         $author = $entityManager->find('Doctrine\Bundle\LicenseManagerBundle\Entity\Author', $id);
@@ -53,7 +53,7 @@ class AuthorController extends Controller
 
         $commits = new Pagerfanta(new DoctrineORMAdapter($query));
         $commits->setMaxPerPage(50);
-        $commits->setCurrentPage($this->getRequest()->get('page', 1));
+        $commits->setCurrentPage($request->get('page', 1));
 
         $expected = hash_hmac('sha512', $id . $author->getEmail(), $this->container->getParameter('secret'));
 
@@ -84,7 +84,7 @@ class AuthorController extends Controller
      * @Extra\Method({"GET", "POST"})
      * @Extra\Template
      */
-    public function authorApproveAction($id)
+    public function authorApproveAction($id, Request $request)
     {
         $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
         $author = $entityManager->find('Doctrine\Bundle\LicenseManagerBundle\Entity\Author', $id);
@@ -95,7 +95,7 @@ class AuthorController extends Controller
 
         $project = $author->getProject();
 
-        $hash = $this->getRequest()->query->get('hash', '');
+        $hash = $request->query->get('hash', '');
         $expected = hash_hmac('sha512', $id . $author->getEmail(), $this->container->getParameter('secret'));
 
         if ($expected != $hash) {
@@ -104,8 +104,8 @@ class AuthorController extends Controller
 
         $form = $this->createForm(new \Doctrine\Bundle\LicenseManagerBundle\Form\ApproveType(), $author);
 
-        if ($this->getRequest()->getMethod() === 'POST') {
-            $form->bind($this->getRequest());
+        if ($request->getMethod() === 'POST') {
+            $form->bind($request);
 
             if ($form->isValid()) {
                 $entityManager->flush();
