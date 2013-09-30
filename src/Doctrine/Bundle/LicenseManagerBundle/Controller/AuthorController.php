@@ -17,12 +17,12 @@ class AuthorController extends Controller
       * @Extra\Route("/licenses/authors/{id}/update", name="licenses_authors_update")
       * @Extra\Method("POST")
       */
-    public function updateAction($id)
+    public function updateAction($id, Request $request)
     {
         $this->assertIsRole('ROLE_ADMIN');
 
         $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
-        $email = $this->getRequest()->request->get('email');
+        $email = $request->request->get('email');
 
         $author = $entityManager->find('Doctrine\Bundle\LicenseManagerBundle\Entity\Author', $id);
         $author->setEmail($email);
@@ -30,7 +30,7 @@ class AuthorController extends Controller
         $entityManager->flush();
 
         $navigator = $this->container->get('doctrine_license_manager.page_nagivator');
-        $navigator->setRequest($this->getRequest());
+        $navigator->setRequest($request);
 
         return $navigator->gotoProjectView($author->getProject()->getId());
     }
