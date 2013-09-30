@@ -1,6 +1,8 @@
 <?php
 namespace Doctrine\Bundle\LicenseManagerBundle\Controller;
 
+use Doctrine\Bundle\LicenseManagerBundle\Entity\Author;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Extra;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -47,17 +49,26 @@ class AuthorController extends Controller
 
         $revisions = $this->get('simplethings_entityaudit.reader')->findRevisions('Doctrine\Bundle\LicenseManagerBundle\Entity\Author', $id);
 
-        $dql = "SELECT c FROM Doctrine\Bundle\LicenseManagerBundle\Entity\Commit c WHERE c.author = ?1 ORDER BY c.created ASC";
-        $query = $entityManager->createQuery($dql);
-        $query->setParameter(1, $author->getId());
-
-        $commits = new Pagerfanta(new DoctrineORMAdapter($query));
+        $commits = $this->findCommitsByAuthor($author);
         $commits->setMaxPerPage(50);
         $commits->setCurrentPage($request->get('page', 1));
 
         $expected = hash_hmac('sha512', $id . $author->getEmail(), $this->container->getParameter('secret'));
 
         return array('author' => $author, 'revisions' => $revisions, 'commits' => $commits, 'expectedHash' => $expected);
+    }
+
+    private function findCommitsByAuthor(Author $author)
+    {
+        $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
+
+        $dql = "SELECT c FROM Doctrine\Bundle\LicenseManagerBundle\Entity\Commit c WHERE c.author = ?1 ORDER BY c.created ASC";
+        $query = $entityManager->createQuery($dql);
+        $query->setParameter(1, $author->getId());
+
+        $commits = new Pagerfanta(new DoctrineORMAdapter($query));
+
+        return $commits;
     }
 
     /**
